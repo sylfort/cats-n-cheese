@@ -1,69 +1,23 @@
-// import React from "react";
-
-// const randomAmountOfCheese = () => {
-//   return Math.floor(Math.random() * 4) + 1;
-// };
-
-// const Cat1 = {
-//   id: 1,
-//   amountOfCheese: randomAmountOfCheese(),
-// };
-
-// const Cat2 = {
-//   id: 2,
-//   amountOfCheese: randomAmountOfCheese(),
-// };
-
-// const Cat3 = {
-//   id: 3,
-//   amountOfCheese: randomAmountOfCheese(),
-// };
-
-// const Cat4 = {
-//   id: 4,
-//   amountOfCheese: randomAmountOfCheese(),
-// };
-
-// console.log(Cat1);
-// console.log(Cat2);
-// console.log(Cat3);
-// console.log(Cat4);
-
-// const Home = () => {
-//   return <div>Home</div>;
-// };
-
-// export default Home;
-
-import { useState, useEffect } from "react";
-
-// Your randomAmountOfCheese function
-const randomAmountOfCheese = () => Math.floor(Math.random() * 4) + 1;
+import { useEffect, useState } from "react";
 
 const CatComponent = () => {
-  // Initialize state with Cat1 object
-  const [cat1, setCat1] = useState({
-    id: 1,
-    name: "redCat",
-    amountOfCheese: randomAmountOfCheese(),
-  });
-  // Initialize state with Cat2 object
-  const [cat2, setCat2] = useState({
-    id: 2,
-    name: "greenCat",
-    amountOfCheese: randomAmountOfCheese(),
-  });
-  // Initialize state with Cat3 object
-  const [cat3, setCat3] = useState({
-    id: 3,
-    name: "pinkCat",
-    amountOfCheese: randomAmountOfCheese(),
-  });
-  // Initialize state with Cat4 object
-  const [cat4, setCat4] = useState({
-    id: 4,
-    name: "blueCat",
-    amountOfCheese: randomAmountOfCheese(),
+  const [cat, setCat] = useState({
+    cat1: { id: 1, name: "redCat", amountOfCheese: randomAmountOfCheese() },
+    cat2: {
+      id: 2,
+      name: "greenCat",
+      amountOfCheese: randomAmountOfCheese(),
+    },
+    cat3: {
+      id: 3,
+      name: "pinkCat",
+      amountOfCheese: randomAmountOfCheese(),
+    },
+    cat4: {
+      id: 4,
+      name: "blueCat",
+      amountOfCheese: randomAmountOfCheese(),
+    },
   });
 
   let [playerSelection, setPlayerSelection] = useState(null);
@@ -71,58 +25,80 @@ const CatComponent = () => {
   let [computerSelection, setComputerSelection] = useState(null);
   let [computerPoints, setComputerPoints] = useState(0);
 
+  useEffect(() => {
+    if (playerSelection && computerSelection) {
+      if (playerSelection.id === computerSelection.id) {
+        // player and computer selected the same cat
+        // playerSelection.id reperesents the cat id
+        console.log("The same");
+        updateAmountOfCheese(playerSelection.id);
+        setTimeout(() => {
+          logPoints();
+        }, 1000);
+      } else {
+        console.log("Not the same");
+        setPlayerPoints(
+          (state) => state + cat[`cat${playerSelection.id}`].amountOfCheese
+        );
+        setComputerPoints(
+          (state) => state + cat[`cat${computerSelection.id}`].amountOfCheese
+        );
+        setTimeout(() => {
+          logPoints();
+        }, 1000);
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [playerSelection, computerSelection]);
+
   // Function to update the amountOfCheese
-  const updateAmountOfCheese = (setCat) => {
-    setCat((prevCat) => ({
-      ...prevCat,
-      amountOfCheese: prevCat + randomAmountOfCheese(),
-    }));
+  const updateAmountOfCheese = (catId) => {
+    setCat((prevState) => {
+      return {
+        ...prevState,
+        [`cat${catId}`]: {
+          ...prevState[`cat${catId}`],
+          amountOfCheese:
+            prevState[`cat${catId}`].amountOfCheese + randomAmountOfCheese(),
+        },
+      };
+    });
   };
 
-  const cats = [cat1, cat2, cat3, cat4];
-
-  useEffect(() => {
-    const handleComparison = () => {
-      if (playerSelection && computerSelection) {
-        if (playerSelection.id === computerSelection.id) {
-          console.log("All players selected the same cat");
-        } else {
-          console.log("Not the same");
-          setPlayerPoints(playerSelection.amountOfCheese);
-          setComputerPoints(computerSelection.amountOfCheese);
-          console.log(playerPoints);
-          console.log(computerPoints);
-        }
-      }
-    };
-
-    if (playerSelection !== null && computerSelection !== null) {
-      handleComparison(playerSelection, computerSelection, playerPoints);
-    }
-  }, [playerSelection, computerSelection, playerPoints, computerPoints]);
+  function randomAmountOfCheese() {
+    return Math.floor(Math.random() * 4) + 1;
+  }
 
   const handlePlayerSelection = (cat) => {
+    console.log(cat);
     setPlayerSelection(cat);
     handleComputerSelection();
   };
 
   const handleComputerSelection = () => {
     const randomIndex = Math.floor(Math.random() * 4);
-    setComputerSelection(cats[randomIndex]);
+    setComputerSelection(Object.values(cat)[randomIndex]);
+  };
+
+  const logPoints = () => {
+    console.log(`player points - ${playerPoints}`);
+    console.log(`computer points - ${computerPoints}`);
   };
 
   return (
     <div>
-      <button onClick={() => handlePlayerSelection(cat1)} className="mr-2">
-        {cat1.name}
+      <button onClick={() => handlePlayerSelection(cat.cat1)} className="mr-2">
+        {cat.cat1.name}
       </button>
-      <button onClick={() => handlePlayerSelection(cat2)} className="mr-2">
-        {cat2.name}
+      <button onClick={() => handlePlayerSelection(cat.cat2)} className="mr-2">
+        {cat.cat2.name}
       </button>
-      <button onClick={() => handlePlayerSelection(cat3)} className="mr-2">
-        {cat3.name}
+      <button onClick={() => handlePlayerSelection(cat.cat3)} className="mr-2">
+        {cat.cat3.name}
       </button>
-      <button onClick={() => handlePlayerSelection(cat4)}>{cat4.name}</button>
+      <button onClick={() => handlePlayerSelection(cat.cat4)}>
+        {cat.cat4.name}
+      </button>
     </div>
   );
 };
