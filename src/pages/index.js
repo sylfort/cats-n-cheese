@@ -19,7 +19,7 @@ const CatComponent = () => {
     }
 
     _randomAmountOfCheese() {
-      return Math.floor(Math.random() * 4) + 1;
+      return Math.floor(Math.random() * cats.length) + 1;
     }
 
     resetAmountOfCheese() {
