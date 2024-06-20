@@ -1,51 +1,35 @@
 import { useEffect, useState } from "react";
 
-const CatComponent = () => {
-  const [cat, setCat] = useState({
-    cat1: { id: 1, name: "redCat", amountOfCheese: randomAmountOfCheese() },
-    cat2: {
-      id: 2,
-      name: "greenCat",
-      amountOfCheese: randomAmountOfCheese(),
-    },
-    cat3: {
-      id: 3,
-      name: "pinkCat",
-      amountOfCheese: randomAmountOfCheese(),
-    },
-    cat4: {
-      id: 4,
-      name: "blueCat",
-      amountOfCheese: randomAmountOfCheese(),
-    },
-  });
+import cats from "./constants/cats";
+import GameSelection from "@/utils/GameSelection";
 
-  let [playerSelection, setPlayerSelection] = useState(null);
-  let [playerPoints, setPlayerPoints] = useState(0);
-  let [computerSelection, setComputerSelection] = useState(null);
-  let [computerPoints, setComputerPoints] = useState(0);
+const CatComponent = () => {
+  const [cat, setCat] = useState(() => cats(randomAmountOfCheese));
+  const [playerSelection, setPlayerSelection] = useState(null);
+  const [computerSelection, setComputerSelection] = useState(null);
+  const [playerPoints, setPlayerPoints] = useState(0);
+  const [computerPoints, setComputerPoints] = useState(0);
+  const [message, setMessage] = useState("");
 
   useEffect(() => {
     if (playerSelection && computerSelection) {
       if (playerSelection.id === computerSelection.id) {
         // player and computer selected the same cat
-        // playerSelection.id reperesents the cat id
-        console.log("The same");
-        updateAmountOfCheese(playerSelection.id);
-        setTimeout(() => {
-          logPoints();
-        }, 1000);
+        // playerSelection.id reperesents the cat id meant to be updated
+        GameSelection.sameSelection(
+          setMessage,
+          updateAmountOfCheese,
+          playerSelection
+        );
       } else {
-        console.log("Not the same");
-        setPlayerPoints(
-          (state) => state + cat[`cat${playerSelection.id}`].amountOfCheese
+        GameSelection.differentSelection(
+          cat,
+          setMessage,
+          computerSelection,
+          playerSelection,
+          setPlayerPoints,
+          setComputerPoints
         );
-        setComputerPoints(
-          (state) => state + cat[`cat${computerSelection.id}`].amountOfCheese
-        );
-        setTimeout(() => {
-          logPoints();
-        }, 1000);
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -70,7 +54,6 @@ const CatComponent = () => {
   }
 
   const handlePlayerSelection = (cat) => {
-    console.log(cat);
     setPlayerSelection(cat);
     handleComputerSelection();
   };
@@ -78,11 +61,6 @@ const CatComponent = () => {
   const handleComputerSelection = () => {
     const randomIndex = Math.floor(Math.random() * 4);
     setComputerSelection(Object.values(cat)[randomIndex]);
-  };
-
-  const logPoints = () => {
-    console.log(`player points - ${playerPoints}`);
-    console.log(`computer points - ${computerPoints}`);
   };
 
   return (
@@ -99,6 +77,12 @@ const CatComponent = () => {
       <button onClick={() => handlePlayerSelection(cat.cat4)}>
         {cat.cat4.name}
       </button>
+      <div className="mt-2">
+        <p className="my-2">{message}</p>
+        <p>
+          computerPoints - {computerPoints}, playerPoints - {playerPoints}
+        </p>
+      </div>
     </div>
   );
 };
