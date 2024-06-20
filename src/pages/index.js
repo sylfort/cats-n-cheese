@@ -96,6 +96,7 @@ const CatComponent = () => {
 
   // Create cats and players in a useEffect to ensure they are not recreated on each render
   useEffect(() => {
+    // Add more cat here if you want more cats
     const redCat = new Cat("redCat");
     const greenCat = new Cat("greenCat");
     const pinkCat = new Cat("pinkCat");
