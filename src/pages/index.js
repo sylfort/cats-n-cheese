@@ -1,118 +1,205 @@
-import Image from "next/image";
-import { Inter } from "next/font/google";
+import { useEffect, useState } from "react";
 
-const inter = Inter({ subsets: ["latin"] });
+const CatComponent = () => {
 
-export default function Home() {
+  class Cat {
+    // Defines a class cat
+    static instances = [];
+    static baseId = 0;
+
+    constructor(name) {
+      this.id = ++Cat.baseId;
+      this.name = name;
+      this._amountOfCheese = this._randomAmountOfCheese();
+      Cat.instances.push(this);
+    }
+
+    get AmountOfCheese() {
+      return this._amountOfCheese;
+    }
+
+    _randomAmountOfCheese() {
+      return Math.floor(Math.random() * 4) + 1;
+    }
+
+    resetAmountOfCheese() {
+      this._amountOfCheese = this._randomAmountOfCheese();
+    }
+
+    increaseAmountOfCheese() {
+      this._amountOfCheese += this._randomAmountOfCheese();
+    }
+  }
+
+  class Player {
+    static instances = [];
+
+    constructor(name = "Player1") {
+      this.name = name;
+      this.points = 0;
+      this.selections = [];
+      Player.instances.push(this);
+    }
+
+    static statistics() {
+      // Get the total points for each player
+      console.log(players);
+      let scores = {};
+
+      // Print the total points for each player
+      for (const [key, value] of Object.entries(players)) {
+        scores[key] = value.points;
+        console.log(`${key} scored = ${value.points}`);
+      }
+
+      // Get the winner
+      const winner = Math.max(...Object.values(scores));
+      const winners = Object.keys(scores).filter((key) => scores[key] === winner);
+      if (winners.length === 1) {
+        console.log(`The winner is ${players[winners[0]].name}`);
+      } else {
+        console.log(`It's a tie between ${winners.join(" and ")}`);
+      }
+      Player.resetPlayers();
+    }
+
+    static resetPlayers() {
+      Player.instances.forEach((player) => {
+        player.points = 0;
+        player.selections = [];
+      });
+      Player.instances = [];
+    }
+
+    logPoints() {
+      console.log(`${this.name} points - ${this.points}`);
+    }
+
+    addPoints(amount) {
+      this.points += amount;
+    }
+
+    chooseCat(id) {
+      if (id === 0) {
+        // This is when the user is the computer
+        id = Math.floor(Math.random() * Cat.instances.length) + 1;
+      }
+      const selected = Cat.instances.find((cat) => cat.id === id);
+      if (selected !== undefined) {
+        this.selections.push(selected);
+        return selected;
+      } else {
+        throw new Error("Cat was not found, please choose another cat");
+      }
+    }
+  }
+
+  // Create cats and players in a useEffect to ensure they are not recreated on each render
+  useEffect(() => {
+    const redCat = new Cat("redCat");
+    const greenCat = new Cat("greenCat");
+    const pinkCat = new Cat("pinkCat");
+    const blueCat = new Cat("blueCat");
+
+    const player1 = new Player("Chinonso");
+    const computer = new Player("Computer");
+
+    // Store the cats and players in state
+    setCats([redCat, greenCat, pinkCat, blueCat]);
+    setPlayers({ player1, computer });
+
+    return () => {
+      Cat.instances = [];
+      Player.instances = [];
+    };
+  }, []);
+
+  // Manage the state of all the cats instance
+  const [cats, setCats] = useState([]);
+
+  // Manage the state of all the players
+  const [players, setPlayers] = useState({ player1: null, computer: null });
+
+  // Manage the amount of cheese with each cat
+  const [cheeseAmounts, setCheeseAmounts] = useState({});
+
+  // Ensures that the cheeseAmount state is always updated when the cheese in any of the cat changes
+  useEffect(() => {
+    const initialCheeseAmounts = cats.reduce((acc, cat) => {
+      acc[cat.name] = cat.AmountOfCheese;
+      return acc;
+    }, {});
+    setCheeseAmounts(initialCheeseAmounts);
+  }, [cats]);
+
+  // When a player clicks on the button, it calls the object
+  const handlePlayerSelection = (id) => {
+    const { player1, computer } = players;
+    let playerSelection;
+    let computerSelection;
+
+    // If the user select a Cat that does not exist it should throw an error
+    try {
+      playerSelection = player1.chooseCat(id);
+      computerSelection = computer.chooseCat(0);
+    } catch (error) {
+      console.log(error.message);
+      return;
+    }
+
+    if (playerSelection.name === computerSelection.name) {
+      // since they both selected the same cat we need to increase the amount of cheese for just that cat
+      computerSelection.increaseAmountOfCheese(); // Increase the amount of cheese on this cat
+      setCheeseAmounts((prev) => ({
+        ...prev,
+        [computerSelection.name]: computerSelection.AmountOfCheese, // Add the updated amount of cheese to state
+      }));
+      console.log("It's a tie");
+    } else {
+      player1.addPoints(playerSelection.AmountOfCheese);
+      computer.addPoints(computerSelection.AmountOfCheese);
+      playerSelection.resetAmountOfCheese();
+      computerSelection.resetAmountOfCheese();
+
+      setCheeseAmounts((prev) => ({
+        ...prev,
+        [playerSelection.name]: playerSelection.AmountOfCheese,
+        [computerSelection.name]: computerSelection.AmountOfCheese,
+      }));
+
+      console.log(
+        `${player1.name} selected ${playerSelection.name} and scored ${cheeseAmounts[playerSelection.name]} points. Total points = ${player1.points}`
+      );
+      console.log(
+        `${computer.name} selected ${computerSelection.name} and scored ${cheeseAmounts[computerSelection.name]} points. Total points = ${computer.points}`
+      );
+    }
+  };
+
   return (
-    <main
-      className={`flex min-h-screen flex-col items-center justify-between p-24 ${inter.className}`}
-    >
-      <div className="z-10 max-w-5xl w-full items-center justify-between font-mono text-sm lg:flex">
-        <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
-          Get started by editing&nbsp;
-          <code className="font-mono font-bold">src/pages/index.js</code>
-        </p>
-        <div className="fixed bottom-0 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-white via-white dark:from-black dark:via-black lg:static lg:h-auto lg:w-auto lg:bg-none">
-          <a
-            className="pointer-events-none flex place-items-center gap-2 p-8 lg:pointer-events-auto lg:p-0"
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+    <>
+      <div>
+        {cats.map((cat) => (
+          <button
+            key={cat.id}
+            onClick={() => handlePlayerSelection(cat.id)}
+            className="mr-2"
           >
-            By{" "}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className="dark:invert"
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
-        </div>
+            {cat.name} {cheeseAmounts[cat.name]}
+          </button>
+        ))}
       </div>
 
-      <div className="relative flex place-items-center before:absolute before:h-[300px] before:w-full sm:before:w-[480px] before:-translate-x-1/2 before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[''] after:absolute after:-z-20 after:h-[180px] after:w-full sm:after:w-[240px] after:translate-x-1/3 after:bg-gradient-conic after:from-sky-200 after:via-blue-200 after:blur-2xl after:content-[''] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700/10 after:dark:from-sky-900 after:dark:via-[#0141ff]/40 before:lg:h-[360px]">
-        <Image
-          className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
+      <div>
+        Once you click on this button the game will reset.
+        <button onClick={Player.statistics}>Click me to view the winner!</button>
       </div>
-
-      <div className="mb-32 grid text-center lg:max-w-5xl lg:w-full lg:mb-0 lg:grid-cols-4 lg:text-left">
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Docs{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Find in-depth information about Next.js features and API.
-          </p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Learn{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Learn about Next.js in an interactive course with&nbsp;quizzes!
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Templates{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Discover and deploy boilerplate example Next.js&nbsp;projects.
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Deploy{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50 text-balance`}>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
+    </>
   );
-}
+};
+
+const Home = () => {
+  return <CatComponent />;
+};
+
+export default Home;
