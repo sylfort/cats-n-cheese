@@ -43,7 +43,6 @@ const CatComponent = () => {
 
     static statistics() {
       // Get the total points for each player
-      console.log(players);
       let scores = {};
 
       // Print the total points for each player
@@ -181,13 +180,13 @@ const CatComponent = () => {
     <>
       <div>
         {cats.map((cat) => (
-          <button
+          <span
             key={cat.id}
             onClick={() => handlePlayerSelection(cat.id)}
             className="mr-2"
           >
             {cat.name} {cheeseAmounts[cat.name]}
-          </button>
+          </span>
         ))}
       </div>
 
