@@ -1,179 +1,131 @@
 import { useEffect, useState } from "react";
+import Cat from "@/utils/cat";
+import Player from "@/utils/player";
 
 const CatComponent = () => {
-
-  class Cat {
-    // Defines a class cat
-    static instances = [];
-    static baseId = 0;
-
-    constructor(name) {
-      this.id = ++Cat.baseId;
-      this.name = name;
-      this._amountOfCheese = this._randomAmountOfCheese();
-      Cat.instances.push(this);
-    }
-
-    get AmountOfCheese() {
-      return this._amountOfCheese;
-    }
-
-    _randomAmountOfCheese() {
-      return Math.floor(Math.random() * cats.length) + 1;
-    }
-
-    resetAmountOfCheese() {
-      this._amountOfCheese = this._randomAmountOfCheese();
-    }
-
-    increaseAmountOfCheese() {
-      this._amountOfCheese += this._randomAmountOfCheese();
-    }
-  }
-
-  class Player {
-    static instances = [];
-
-    constructor(name = "Player1") {
-      this.name = name;
-      this.points = 0;
-      this.selections = [];
-      Player.instances.push(this);
-    }
-
-    static statistics() {
-      // Get the total points for each player
-      let scores = {};
-
-      // Print the total points for each player
-      for (const [key, value] of Object.entries(players)) {
-        scores[key] = value.points;
-        console.log(`${key} scored = ${value.points}`);
-      }
-
-      // Get the winner
-      const winner = Math.max(...Object.values(scores));
-      const winners = Object.keys(scores).filter((key) => scores[key] === winner);
-      if (winners.length === 1) {
-        console.log(`The winner is ${players[winners[0]].name}`);
-      } else {
-        console.log(`It's a tie between ${winners.join(" and ")}`);
-      }
-      Player.resetPlayers();
-    }
-
-    static resetPlayers() {
-      Player.instances.forEach((player) => {
-        player.points = 0;
-        player.selections = [];
-      });
-      Player.instances = [];
-    }
-
-    logPoints() {
-      console.log(`${this.name} points - ${this.points}`);
-    }
-
-    addPoints(amount) {
-      this.points += amount;
-    }
-
-    chooseCat(id) {
-      if (id === 0) {
-        // This is when the user is the computer
-        id = Math.floor(Math.random() * Cat.instances.length) + 1;
-      }
-      const selected = Cat.instances.find((cat) => cat.id === id);
-      if (selected !== undefined) {
-        this.selections.push(selected);
-        return selected;
-      } else {
-        throw new Error("Cat was not found, please choose another cat");
-      }
-    }
-  }
-
-  // Create cats and players in a useEffect to ensure they are not recreated on each render
-  useEffect(() => {
-    // Add more cat here if you want more cats
-    const redCat = new Cat("redCat");
-    const greenCat = new Cat("greenCat");
-    const pinkCat = new Cat("pinkCat");
-    const blueCat = new Cat("blueCat");
-
-    const player1 = new Player("Chinonso");
-    const computer = new Player("Computer");
-
-    // Store the cats and players in state
-    setCats([redCat, greenCat, pinkCat, blueCat]);
-    setPlayers({ player1, computer });
-
-    return () => {
-      Cat.instances = [];
-      Player.instances = [];
-    };
-  }, []);
-
-  // Manage the state of all the cats instance
   const [cats, setCats] = useState([]);
-
-  // Manage the state of all the players
-  const [players, setPlayers] = useState({ player1: null, computer: null });
-
-  // Manage the amount of cheese with each cat
+  const [players, setPlayers] = useState({ singlePlayer: null, computer: null });
   const [cheeseAmounts, setCheeseAmounts] = useState({});
 
-  // Ensures that the cheeseAmount state is always updated when the cheese in any of the cat changes
   useEffect(() => {
-    const initialCheeseAmounts = cats.reduce((acc, cat) => {
-      acc[cat.name] = cat.AmountOfCheese;
+    // More cats can be added here
+    const initialCats = [
+      new Cat("redCat"),
+      new Cat("greenCat"),
+      new Cat("pinkCat"),
+      new Cat("blueCat"),
+    ];
+
+    const singlePlayer = new Player("Player");
+    const computer = new Player("Computer");
+
+    // update the amount of cheese on each cat, this is mandatory
+    let id = 0;
+    for (const cat of initialCats) {
+      cat.id = ++id;
+      cat.amountOfCheese = initialCats;
+    }
+    id = 0;
+
+    const initialCheeseAmounts = initialCats.reduce((acc, cat) => {
+      // prepare for a state update
+      acc[cat.name] = cat.amountOfCheese;
       return acc;
     }, {});
-    setCheeseAmounts(initialCheeseAmounts);
-  }, [cats]);
 
-  // When a player clicks on the button, it calls the object
+    // update the cats state
+    setCats(initialCats);
+    // update the players state
+    setPlayers({ singlePlayer, computer });
+    // Update the state of the cheese
+    setCheeseAmounts(initialCheeseAmounts);
+  }, []);
+
   const handlePlayerSelection = (id) => {
-    const { player1, computer } = players;
+    const { singlePlayer, computer } = players;
     let playerSelection;
     let computerSelection;
 
-    // If the user select a Cat that does not exist it should throw an error
     try {
-      playerSelection = player1.chooseCat(id);
-      computerSelection = computer.chooseCat(0);
+      playerSelection = singlePlayer.chooseCat(id, cats);
+      computerSelection = computer.chooseCat(0, cats);
     } catch (error) {
       console.log(error.message);
       return;
     }
 
     if (playerSelection.name === computerSelection.name) {
-      // since they both selected the same cat we need to increase the amount of cheese for just that cat
-      computerSelection.increaseAmountOfCheese(); // Increase the amount of cheese on this cat
+      computerSelection.increaseAmountOfCheese(cats);
       setCheeseAmounts((prev) => ({
         ...prev,
-        [computerSelection.name]: computerSelection.AmountOfCheese, // Add the updated amount of cheese to state
+        [computerSelection.name]: computerSelection.amountOfCheese,
       }));
       console.log("It's a tie");
     } else {
-      player1.addPoints(playerSelection.AmountOfCheese);
-      computer.addPoints(computerSelection.AmountOfCheese);
-      playerSelection.resetAmountOfCheese();
-      computerSelection.resetAmountOfCheese();
+      singlePlayer.addPoints(playerSelection.amountOfCheese);
+      computer.addPoints(computerSelection.amountOfCheese);
+
+      console.log(
+        `${singlePlayer.name} selected ${playerSelection.name} and scored ${playerSelection.amountOfCheese} points. Total points = ${singlePlayer.points}`
+      );
+      console.log(
+        `${computer.name} selected ${computerSelection.name} and scored ${computerSelection.amountOfCheese} points. Total points = ${computer.points}`
+      );
+
+      playerSelection.resetAmountOfCheese(cats);
+      computerSelection.resetAmountOfCheese(cats);
 
       setCheeseAmounts((prev) => ({
         ...prev,
-        [playerSelection.name]: playerSelection.AmountOfCheese,
-        [computerSelection.name]: computerSelection.AmountOfCheese,
+        [playerSelection.name]: playerSelection.amountOfCheese,
+        [computerSelection.name]: computerSelection.amountOfCheese,
       }));
-
-      console.log(
-        `${player1.name} selected ${playerSelection.name} and scored ${cheeseAmounts[playerSelection.name]} points. Total points = ${player1.points}`
-      );
-      console.log(
-        `${computer.name} selected ${computerSelection.name} and scored ${cheeseAmounts[computerSelection.name]} points. Total points = ${computer.points}`
-      );
     }
+  };
+
+  const handleShowStatistics = () => {
+    // showing statistics ends the game, this can be modified
+    const scores = {};
+
+    // This can be update to display to the user
+    Object.values(players).forEach((player) => {
+      scores[player.name] = player.points;
+      console.log(`${player.name} scored = ${player.points}`);
+    });
+
+    const winner = Math.max(...Object.values(scores));
+    const winners = Object.keys(scores).filter((key) => scores[key] === winner);
+    if (winners.length === 1) {
+      console.log(`The winner is ${winners[0]}`);
+    } else {
+      console.log(`It's a tie between ${winners.join(" and ")}`);
+    }
+
+    setPlayers((prevPlayers) => {
+      const resetPlayers = Object.fromEntries(
+        Object.entries(prevPlayers).map(([key, player]) => [
+          key,
+          { ...player, points: 0, selections: [] },
+        ])
+      );
+      return resetPlayers;
+    });
+
+    setCats((prevCats) =>
+      prevCats.map((cat) => {
+        const newCat = new Cat(cat.name);
+        newCat.amountOfCheese = cats;
+        return newCat;
+      })
+    );
+
+    setCheeseAmounts((prevCheeseAmounts) => {
+      const resetCheeseAmounts = cats.reduce((acc, cat) => {
+        acc[cat.name] = cat.amountOfCheese;
+        return acc;
+      }, {});
+      return resetCheeseAmounts;
+    });
   };
 
   return (
@@ -192,7 +144,7 @@ const CatComponent = () => {
 
       <div>
         Once you click on this button the game will reset.
-        <button onClick={Player.statistics}>Click me to view the winner!</button>
+        <button onClick={handleShowStatistics}>Click me to view the winner!</button>
       </div>
     </>
   );
