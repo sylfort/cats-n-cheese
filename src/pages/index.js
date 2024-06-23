@@ -4,8 +4,12 @@ import Player from "@/utils/player";
 
 const CatComponent = () => {
   const [cats, setCats] = useState([]);
-  const [players, setPlayers] = useState({ singlePlayer: null, computer: null });
+  const [players, setPlayers] = useState({
+    singlePlayer: null,
+    computer: null,
+  });
   const [cheeseAmounts, setCheeseAmounts] = useState({});
+  let [rounds, setRounds] = useState(1); // To handle number of rounds
 
   useEffect(() => {
     // More cats can be added here
@@ -42,6 +46,13 @@ const CatComponent = () => {
   }, []);
 
   const handlePlayerSelection = (id) => {
+    console.log(rounds);
+    // Show winner after 8 rounds
+    if (rounds >= 8) {
+      handleShowStatistics();
+      return;
+    }
+
     const { singlePlayer, computer } = players;
     let playerSelection;
     let computerSelection;
@@ -53,6 +64,9 @@ const CatComponent = () => {
       console.log(error.message);
       return;
     }
+
+    // increment the number of rounds
+    setRounds(rounds + 1);
 
     if (playerSelection.name === computerSelection.name) {
       computerSelection.increaseAmountOfCheese(cats);
@@ -87,7 +101,7 @@ const CatComponent = () => {
     // showing statistics ends the game, this can be modified
     const scores = {};
 
-    // This can be update to display to the user
+    // This can be updated to display to the user
     Object.values(players).forEach((player) => {
       scores[player.name] = player.points;
       console.log(`${player.name} scored = ${player.points}`);
@@ -101,31 +115,33 @@ const CatComponent = () => {
       console.log(`It's a tie between ${winners.join(" and ")}`);
     }
 
-    setPlayers((prevPlayers) => {
-      const resetPlayers = Object.fromEntries(
-        Object.entries(prevPlayers).map(([key, player]) => [
-          key,
-          { ...player, points: 0, selections: [] },
-        ])
-      );
-      return resetPlayers;
-    });
+    // Reset players using the Player class constructor
+    const singlePlayer = new Player("Player");
+    const computer = new Player("Computer");
 
+    setPlayers({ singlePlayer, computer });
+
+    // Reset cats
     setCats((prevCats) =>
-      prevCats.map((cat) => {
+      prevCats.map((cat, index) => {
         const newCat = new Cat(cat.name);
-        newCat.amountOfCheese = cats;
+        newCat.id = index + 1; // Assign unique IDs starting from 1
+        newCat.amountOfCheese = prevCats; // Use the previous cats array to set amount of cheese
         return newCat;
       })
     );
 
-    setCheeseAmounts((prevCheeseAmounts) => {
+    // Reset cheese amounts
+    setCheeseAmounts(() => {
       const resetCheeseAmounts = cats.reduce((acc, cat) => {
         acc[cat.name] = cat.amountOfCheese;
         return acc;
       }, {});
       return resetCheeseAmounts;
     });
+
+    // Reset click count
+    setRounds(1);
   };
 
   return (
@@ -144,7 +160,9 @@ const CatComponent = () => {
 
       <div>
         Once you click on this button the game will reset.
-        <button onClick={handleShowStatistics}>Click me to view the winner!</button>
+        <button onClick={handleShowStatistics}>
+          Click me to view the winner!
+        </button>
       </div>
     </>
   );
