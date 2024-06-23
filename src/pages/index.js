@@ -46,6 +46,7 @@ const CatComponent = () => {
   }, []);
 
   const handlePlayerSelection = (id) => {
+    console.log(rounds);
     // Show winner after 8 rounds
     if (rounds >= 8) {
       handleShowStatistics();
