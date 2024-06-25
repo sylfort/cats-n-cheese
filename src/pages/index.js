@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react';
-import Cat from '@/utils/cat';
-import Player from '@/utils/player';
+import { useEffect, useState } from "react";
+import Cat from "@/utils/cat";
+import Player from "@/utils/player";
 
 const CatComponent = () => {
   const [cats, setCats] = useState([]);
@@ -14,14 +14,14 @@ const CatComponent = () => {
   useEffect(() => {
     // More cats can be added here
     const initialCats = [
-      new Cat('redCat'),
-      new Cat('greenCat'),
-      new Cat('pinkCat'),
-      new Cat('blueCat'),
+      new Cat("redCat"),
+      new Cat("greenCat"),
+      new Cat("pinkCat"),
+      new Cat("blueCat"),
     ];
 
-    const singlePlayer = new Player('Player');
-    const computer = new Player('Computer');
+    const singlePlayer = new Player("Player");
+    const computer = new Player("Computer");
 
     // update the amount of cheese on each cat, this is mandatory
     let id = 0;
@@ -98,6 +98,9 @@ const CatComponent = () => {
   };
 
   const handleShowStatistics = () => {
+    // indicate that game has ended
+    console.log("Game ended.");
+
     // showing statistics ends the game, this can be modified
     const scores = {};
 
@@ -112,12 +115,12 @@ const CatComponent = () => {
     if (winners.length === 1) {
       console.log(`The winner is ${winners[0]}`);
     } else {
-      console.log(`It's a tie between ${winners.join(' and ')}`);
+      console.log(`It's a tie between ${winners.join(" and ")}`);
     }
 
     // Reset players using the Player class constructor
-    const singlePlayer = new Player('Player');
-    const computer = new Player('Computer');
+    const singlePlayer = new Player("Player");
+    const computer = new Player("Computer");
 
     setPlayers({ singlePlayer, computer });
 
@@ -140,7 +143,7 @@ const CatComponent = () => {
       return resetCheeseAmounts;
     });
 
-    // Reset click count
+    // Reset round
     setRounds(1);
   };
 
@@ -151,7 +154,7 @@ const CatComponent = () => {
           <span
             key={cat.id}
             onClick={() => handlePlayerSelection(cat.id)}
-            className="mr-2"
+            className="mr-2 cursor-pointer"
           >
             {cat.name} {cheeseAmounts[cat.name]}
           </span>
@@ -159,9 +162,12 @@ const CatComponent = () => {
       </div>
 
       <div>
-        Once you click on this button the game will reset.
-        <button onClick={handleShowStatistics}>
-          Click me to view the winner!
+        Once you click on this button the game will end.
+        <button
+          className="p-1 bg-blue-300 rounded-md ml-1 text-sm shadow-sm"
+          onClick={handleShowStatistics}
+        >
+          End game.
         </button>
       </div>
     </>
