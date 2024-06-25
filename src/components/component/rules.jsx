@@ -25,7 +25,9 @@ const GameRulesModal = () => {
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex items-center justify-between">
-              <h3 className="text-lg font-bold">Cats n' Cheese - Game Rules</h3>
+              <h3 className="text-lg font-bold">
+                Cats n&apos; Cheese - Game Rules
+              </h3>
               <button onClick={toggleModal} className="text-black close-modal">
                 <X size={24} />
               </button>
@@ -58,13 +60,13 @@ const GameRulesModal = () => {
                 </li>
                 <li>
                   If multiple players target the same cat, the cat will become
-                  aware of the mice's presence. In this case no player gets the
-                  Cheese.
+                  aware of the mice&apos;s presence. In this case no player gets
+                  the Cheese.
                 </li>
                 <li>
                   Next round: Cats will receive a new cheese card on each round.
-                  The total number of cheese for each cat piles up, so it's your
-                  chance to comeback if you are behind!
+                  The total number of cheese for each cat piles up, so it&apos;s
+                  your chance to comeback if you are behind!
                 </li>
               </ol>
 
