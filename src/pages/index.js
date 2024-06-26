@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import Cat from '@/utils/cat';
 import Player from '@/utils/player';
 import GameRulesModal from '@/components/component/rules';
+import CheeseIcon from '@/components/cheeseIcon';
 
 const CatComponent = () => {
   const [cats, setCats] = useState([]);
@@ -158,6 +159,9 @@ const CatComponent = () => {
             className="mr-2 cursor-pointer"
           >
             {cat.name} {cheeseAmounts[cat.name]}
+            {Array.from({ length: cheeseAmounts[cat.name] }).map((_, index) => (
+              <CheeseIcon key={index} />
+            ))}
           </span>
         ))}
       </div>
