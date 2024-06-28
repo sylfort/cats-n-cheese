@@ -30,7 +30,9 @@ const CatsNCheeseUI = () => {
             alt="Cats n' Cheese Logo"
             className="w-12 h-12 rounded-full"
           />
-          <h1 className="text-2xl font-bold text-purple-600">Cats n' Cheese</h1>
+          <h1 className="text-2xl font-bold text-purple-600">
+            Cats n&apos; Cheese
+          </h1>
         </div>
         <button
           onClick={toggleModal}
@@ -72,7 +74,7 @@ const CatsNCheeseUI = () => {
       {/* Footer */}
       <footer className="p-4 text-center text-gray-600 bg-white shadow-md">
         <p>
-          © 2024 Cats n' Cheese |{" "}
+          © 2024 Cats n&apos; Cheese |{" "}
           <a href="#" className="text-purple-600 hover:underline">
             GitHub
           </a>
