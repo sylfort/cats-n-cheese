@@ -3,7 +3,7 @@ import Image from "next/image";
 import Cat from "@/utils/cat";
 import Player from "@/utils/player";
 import GameRulesModal from "@/components/component/rules";
-import EndGameModal from "@/components/component/endGameModal";
+import EndGameModal from "./endGameModal";
 import CheeseIcon from "@/components/cheeseIcon";
 
 import warriorCat from "@/assets/warrior_cat.jpg";
@@ -21,6 +21,9 @@ const CatComponent = () => {
   });
   const [cheeseAmounts, setCheeseAmounts] = useState({});
   let [rounds, setRounds] = useState(1); // To handle number of rounds
+  const [scores, setScores] = useState({});
+  const [winner, setWinner] = useState(null);
+  const [isEnd, setIsEnd] = useState(false);
 
   useEffect(() => {
     const initialCats = [
@@ -117,16 +120,21 @@ const CatComponent = () => {
     // This can be updated to display to the user
     Object.values(players).forEach((player) => {
       scores[player.name] = player.points;
-      console.log(`${player.name} scored = ${player.points}`);
     });
 
+    console.log(scores, 1);
     const winner = Math.max(...Object.values(scores));
+    console.log(scores, 2);
     const winners = Object.keys(scores).filter((key) => scores[key] === winner);
+    console.log(scores, 3);
+
     if (winners.length === 1) {
-      console.log(`The winner is ${winners[0]}`);
+      setWinner(`The winner is ${winners[0]}`);
     } else {
-      console.log(`It's a tie between ${winners.join(" and ")}`);
+      setWinner(`It's a tie between ${winners.join(" and ")}`);
     }
+
+    setScores(scores);
 
     // Reset players using the Player class constructor
     const singlePlayer = new Player("Player");
@@ -159,6 +167,7 @@ const CatComponent = () => {
 
   const handleRestart = () => {
     console.log("Game restarted");
+
     // setIsEnd(false);
     // Reset players using the Player class constructor
     const singlePlayer = new Player("Player");
@@ -189,7 +198,6 @@ const CatComponent = () => {
     setRounds(1);
 
     // Clear scores and winner
-
     setScores((prevScores) => {
       return Object.keys(prevScores).reduce((acc, initialKeys) => {
         acc[initialKeys] = 0;
@@ -197,9 +205,11 @@ const CatComponent = () => {
       }, {});
     });
 
+    console.log(scores, 4);
+
+    setWinner(null);
     // setScores({});
     // setIsEnd(false);
-    setWinner(null);
   };
 
   return (
