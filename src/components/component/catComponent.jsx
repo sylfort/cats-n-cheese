@@ -25,6 +25,8 @@ const CatComponent = () => {
   const [winner, setWinner] = useState(null);
   const [isEnd, setIsEnd] = useState(false);
 
+
+  const toggleModal = () => setIsEnd(!isEnd);
   useEffect(() => {
     const initialCats = [
       new Cat("Warrior Cat"),
@@ -115,60 +117,26 @@ const CatComponent = () => {
     console.log("Game ended.");
 
     // showing statistics ends the game, this can be modified
-    const scores = {};
-
     // This can be updated to display to the user
     Object.values(players).forEach((player) => {
       scores[player.name] = player.points;
     });
 
-    console.log(scores, 1);
     const winner = Math.max(...Object.values(scores));
-    console.log(scores, 2);
     const winners = Object.keys(scores).filter((key) => scores[key] === winner);
-    console.log(scores, 3);
 
     if (winners.length === 1) {
       setWinner(`The winner is ${winners[0]}`);
     } else {
       setWinner(`It's a tie between ${winners.join(" and ")}`);
     }
+    setIsEnd(true);
 
-    setScores(scores);
-
-    // Reset players using the Player class constructor
-    const singlePlayer = new Player("Player");
-    const computer = new Player("Computer");
-
-    setPlayers({ singlePlayer, computer });
-
-    // Reset cats
-    setCats((prevCats) =>
-      prevCats.map((cat, index) => {
-        const newCat = new Cat(cat.name);
-        newCat.id = index + 1; // Assign unique IDs starting from 1
-        newCat.amountOfCheese = prevCats; // Use the previous cats array to set amount of cheese
-        return newCat;
-      })
-    );
-
-    // Reset cheese amounts
-    setCheeseAmounts(() => {
-      const resetCheeseAmounts = cats.reduce((acc, cat) => {
-        acc[cat.name] = cat.amountOfCheese;
-        return acc;
-      }, {});
-      return resetCheeseAmounts;
-    });
-
-    // Reset round
-    setRounds(1);
   };
 
   const handleRestart = () => {
     console.log("Game restarted");
 
-    // setIsEnd(false);
     // Reset players using the Player class constructor
     const singlePlayer = new Player("Player");
     const computer = new Player("Computer");
@@ -204,12 +172,7 @@ const CatComponent = () => {
         return acc;
       }, {});
     });
-
-    console.log(scores, 4);
-
     setWinner(null);
-    // setScores({});
-    // setIsEnd(false);
   };
 
   return (
@@ -254,23 +217,46 @@ const CatComponent = () => {
       <div className="flex flex-col items-center space-y-2">
         <div>
           <EndGameModal
-            scores={
-              scores && (
-                <>
-                  <p className="mt-2">{winner}</p>
-
-                  <div className="mt-2">
-                    {Object.entries(scores).map(([name, points]) => (
-                      <p key={name}>{`${name} score = ${points}`}</p>
-                    ))}
-                  </div>
-                </>
-              )
-            }
             onClick={handleShowStatistics}
-            restartGame={handleRestart}
-            isEnd={isEnd}
           />
+
+      {isEnd  && (<div
+          className="fixed inset-0 w-full h-full overflow-y-auto bg-gray-600 bg-opacity-50"
+          onClick={toggleModal}
+        >
+       <div
+            className="relative w-11/12 p-5 mx-auto bg-white border rounded-md shadow-lg top-20 md:w-3/4 lg:w-1/2"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex items-center justify-between">
+              <h3 className="text-lg font-bold">Game ended.</h3>
+            </div>
+
+            <div className="mt-2 overflow-y-auto max-h-[70vh]">
+              
+            <p className="mt-2">{winner}</p>
+
+            <div className="mt-2">
+              {Object.entries(scores).map(([name, points]) => (
+                <p key={name}>{`${name}'s score = ${points}`}</p>
+              ))}
+            </div>              
+              
+              </div>
+
+            <button
+              className="mt-2 px-4 py-2 font-bold text-white bg-blue-500 rounded hover:bg-blue-700"
+              onClick={() => {
+                handleRestart();
+                toggleModal();
+              }}
+            >
+              Restart Game
+            </button>
+          </div>
+        </div>)}
+
+
         </div>
       </div>
     </div>

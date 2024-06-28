@@ -1,25 +1,18 @@
 import { useState } from "react";
 import { X } from "lucide-react";
 
-const EndGameModal = ({ scores, onClick, restartGame, isEnd }) => {
-  const [isOpen, setIsOpen] = useState(isEnd);
-
-  const toggleModal = () => setIsOpen(!isOpen);
-
-  const restartAndClose = () => {
-    restartGame();
-    toggleModal();
-  };
+const EndGameModal = ({ onClick }) => {
 
   return (
     <>
       <button
-        onClick={toggleModal}
+        onClick={onClick}
         className="px-4 py-2 font-bold text-white bg-blue-500 rounded hover:bg-blue-700"
       >
-        <p onClick={onClick}>End Game</p>
+        <p> End Game</p>
+        {/* <p onClick={onClick}>End Game</p> */}
       </button>
-
+{/* 
       {isOpen && (
         <div
           className="fixed inset-0 w-full h-full overflow-y-auto bg-gray-600 bg-opacity-50"
@@ -46,7 +39,7 @@ const EndGameModal = ({ scores, onClick, restartGame, isEnd }) => {
             </button>
           </div>
         </div>
-      )}
+      )} */}
     </>
   );
 };
