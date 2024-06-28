@@ -24,10 +24,25 @@ const CatComponent = () => {
   const [scores, setScores] = useState({});
   const [winner, setWinner] = useState(null);
   const [isEnd, setIsEnd] = useState(false);
-
+  const [startGame, setStartGame] = useState(true);
 
   const toggleModal = () => setIsEnd(!isEnd);
-  useEffect(() => {
+
+  const handleExit = () => {
+    console.log("Game exited");
+    setStartGame(true);
+    setIsEnd(false);
+    setCats([]);
+    setPlayers({})
+    setCheeseAmounts({});
+    setRounds(1);
+    setWinner(null);
+    setScores({});
+  }
+  const handleStartGame = () => {
+    setStartGame(false);
+
+  // useEffect(() => {
     const initialCats = [
       new Cat("Warrior Cat"),
       new Cat("Gangster Cat"),
@@ -58,8 +73,8 @@ const CatComponent = () => {
     setPlayers({ singlePlayer, computer });
     // Update the state of the cheese
     setCheeseAmounts(initialCheeseAmounts);
-  }, []);
-
+  // }, []);
+  };
   const handlePlayerSelection = (id) => {
     console.log(rounds);
     // Show winner after 8 rounds
@@ -136,7 +151,8 @@ const CatComponent = () => {
 
   const handleRestart = () => {
     console.log("Game restarted");
-
+    setStartGame(false);
+    handleStartGame();
     // Reset players using the Player class constructor
     const singlePlayer = new Player("Player");
     const computer = new Player("Computer");
@@ -216,9 +232,15 @@ const CatComponent = () => {
       </div>
       <div className="flex flex-col items-center space-y-2">
         <div>
-          <EndGameModal
+          {startGame ? <button
+                onClick={handleStartGame}
+                className="px-4 py-2 font-bold text-white bg-blue-500 rounded hover:bg-blue-700"
+              >
+                <p> Start</p>
+                {/* <p onClick={onClick}>End Game</p> */}
+              </button>:<EndGameModal
             onClick={handleShowStatistics}
-          />
+          />}
 
       {isEnd  && (<div
           className="fixed inset-0 w-full h-full overflow-y-auto bg-gray-600 bg-opacity-50"
@@ -253,6 +275,18 @@ const CatComponent = () => {
             >
               Restart Game
             </button>
+
+
+            <button
+              className="ml-2 mt-2 px-4 py-2 font-bold text-white bg-blue-500 rounded hover:bg-blue-700"
+              onClick={() => {
+                toggleModal();
+                handleExit();
+              }}
+            >
+              Exit game
+            </button>
+
           </div>
         </div>)}
 
