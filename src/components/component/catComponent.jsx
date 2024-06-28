@@ -3,6 +3,7 @@ import Image from "next/image";
 import Cat from "@/utils/cat";
 import Player from "@/utils/player";
 import GameRulesModal from "@/components/component/rules";
+import EndGameModal from "./endGameModal";
 import CheeseIcon from "@/components/cheeseIcon";
 
 import warriorCat from "@/assets/warrior_cat.jpg";
@@ -20,8 +21,29 @@ const CatComponent = () => {
   });
   const [cheeseAmounts, setCheeseAmounts] = useState({});
   let [rounds, setRounds] = useState(1); // To handle number of rounds
+  const [scores, setScores] = useState({});
+  const [winner, setWinner] = useState(null);
+  const [isEnd, setIsEnd] = useState(false);
+  const [startGame, setStartGame] = useState(true);
 
-  useEffect(() => {
+  const toggleModal = () => setIsEnd(!isEnd);
+
+  const handleExit = () => {
+    console.log("Game exited");
+    setStartGame(true);
+    setIsEnd(false);
+    setCats([]);
+    setPlayers({});
+    setCheeseAmounts({});
+    setRounds(1);
+    setWinner(null);
+    setScores({});
+  };
+
+  const handleStartGame = () => {
+    setStartGame(false);
+
+    // useEffect(() => {
     const initialCats = [
       new Cat("Warrior Cat"),
       new Cat("Gangster Cat"),
@@ -48,12 +70,14 @@ const CatComponent = () => {
 
     // update the cats state
     setCats(initialCats);
+
     // update the players state
     setPlayers({ singlePlayer, computer });
+
     // Update the state of the cheese
     setCheeseAmounts(initialCheeseAmounts);
-  }, []);
-
+    // }, []);
+  };
   const handlePlayerSelection = (id) => {
     console.log(rounds);
     // Show winner after 8 rounds
@@ -111,21 +135,29 @@ const CatComponent = () => {
     console.log("Game ended.");
 
     // showing statistics ends the game, this can be modified
-    const scores = {};
-
     // This can be updated to display to the user
     Object.values(players).forEach((player) => {
       scores[player.name] = player.points;
-      console.log(`${player.name} scored = ${player.points}`);
     });
 
     const winner = Math.max(...Object.values(scores));
     const winners = Object.keys(scores).filter((key) => scores[key] === winner);
+
     if (winners.length === 1) {
-      console.log(`The winner is ${winners[0]}`);
+      setWinner(`The winner is ${winners[0]}`);
     } else {
-      console.log(`It's a tie between ${winners.join(" and ")}`);
+      setWinner(`It's a tie between ${winners.join(" and ")}`);
     }
+
+    setIsEnd(true);
+  };
+
+  const handleRestart = () => {
+    console.log("Game restarted");
+
+    setStartGame(false);
+
+    handleStartGame();
 
     // Reset players using the Player class constructor
     const singlePlayer = new Player("Player");
@@ -154,6 +186,17 @@ const CatComponent = () => {
 
     // Reset round
     setRounds(1);
+
+    // Reset scores
+    setScores((prevScores) => {
+      return Object.keys(prevScores).reduce((acc, initialKeys) => {
+        acc[initialKeys] = 0;
+        return acc;
+      }, {});
+    });
+
+    // Reset winner
+    setWinner(null);
   };
 
   return (
@@ -182,6 +225,7 @@ const CatComponent = () => {
                 className="rounded"
               />
             </div>
+
             <span className="mt-2 text-sm sm:text-base">
               {cat.name}
               <div className="flex justify-center mt-1">
@@ -195,13 +239,67 @@ const CatComponent = () => {
           </button>
         ))}
       </div>
+
       <div className="flex flex-col items-center space-y-2">
-        <button
-          className="px-4 py-2 text-sm bg-blue-300 rounded-md shadow-sm"
-          onClick={handleShowStatistics}
-        >
-          End game
-        </button>
+        <div>
+          {startGame ? (
+            <button
+              onClick={handleStartGame}
+              className="px-4 py-2 font-bold text-white bg-blue-500 rounded hover:bg-blue-700"
+            >
+              <p> Start</p>
+              {/* <p onClick={onClick}>End Game</p> */}
+            </button>
+          ) : (
+            <EndGameModal onClick={handleShowStatistics} />
+          )}
+
+          {isEnd && (
+            <div
+              className="fixed inset-0 w-full h-full overflow-y-auto bg-gray-600 bg-opacity-50"
+              onClick={toggleModal}
+            >
+              <div
+                className="relative w-11/12 p-5 mx-auto bg-white border rounded-md shadow-lg top-20 md:w-3/4 lg:w-1/2"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <div className="flex items-center justify-between">
+                  <h3 className="text-lg font-bold">Game ended.</h3>
+                </div>
+
+                <div className="mt-2 overflow-y-auto max-h-[70vh]">
+                  <p className="mt-2">{winner}</p>
+
+                  <div className="mt-2">
+                    {Object.entries(scores).map(([name, points]) => (
+                      <p key={name}>{`${name}'s score = ${points}`}</p>
+                    ))}
+                  </div>
+                </div>
+
+                <button
+                  className="mt-2 px-4 py-2 font-bold text-white bg-blue-500 rounded hover:bg-blue-700"
+                  onClick={() => {
+                    handleRestart();
+                    toggleModal();
+                  }}
+                >
+                  Restart Game
+                </button>
+
+                <button
+                  className="ml-2 mt-2 px-4 py-2 font-bold text-white bg-blue-500 rounded hover:bg-blue-700"
+                  onClick={() => {
+                    toggleModal();
+                    handleExit();
+                  }}
+                >
+                  Exit game
+                </button>
+              </div>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );
