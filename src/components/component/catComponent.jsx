@@ -3,6 +3,7 @@ import Image from "next/image";
 import Cat from "@/utils/cat";
 import Player from "@/utils/player";
 import GameRulesModal from "@/components/component/rules";
+import EndGameModal from "@/components/component/endGameModal";
 import CheeseIcon from "@/components/cheeseIcon";
 
 import warriorCat from "@/assets/warrior_cat.jpg";
@@ -156,6 +157,51 @@ const CatComponent = () => {
     setRounds(1);
   };
 
+  const handleRestart = () => {
+    console.log("Game restarted");
+    // setIsEnd(false);
+    // Reset players using the Player class constructor
+    const singlePlayer = new Player("Player");
+    const computer = new Player("Computer");
+
+    setPlayers({ singlePlayer, computer });
+
+    // Reset cats
+    setCats((prevCats) =>
+      prevCats.map((cat, index) => {
+        const newCat = new Cat(cat.name);
+        newCat.id = index + 1; // Assign unique IDs starting from 1
+        newCat.amountOfCheese = prevCats; // Use the previous cats array to set amount of cheese
+        return newCat;
+      })
+    );
+
+    // Reset cheese amounts
+    setCheeseAmounts(() => {
+      const resetCheeseAmounts = cats.reduce((acc, cat) => {
+        acc[cat.name] = cat.amountOfCheese;
+        return acc;
+      }, {});
+      return resetCheeseAmounts;
+    });
+
+    // Reset round
+    setRounds(1);
+
+    // Clear scores and winner
+
+    setScores((prevScores) => {
+      return Object.keys(prevScores).reduce((acc, initialKeys) => {
+        acc[initialKeys] = 0;
+        return acc;
+      }, {});
+    });
+
+    // setScores({});
+    // setIsEnd(false);
+    setWinner(null);
+  };
+
   return (
     <div className="flex flex-col items-center justify-center w-full h-full p-4 space-y-4">
       <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
@@ -196,12 +242,26 @@ const CatComponent = () => {
         ))}
       </div>
       <div className="flex flex-col items-center space-y-2">
-        <button
-          className="px-4 py-2 text-sm bg-blue-300 rounded-md shadow-sm"
-          onClick={handleShowStatistics}
-        >
-          End game
-        </button>
+        <div>
+          <EndGameModal
+            scores={
+              scores && (
+                <>
+                  <p className="mt-2">{winner}</p>
+
+                  <div className="mt-2">
+                    {Object.entries(scores).map(([name, points]) => (
+                      <p key={name}>{`${name} score = ${points}`}</p>
+                    ))}
+                  </div>
+                </>
+              )
+            }
+            onClick={handleShowStatistics}
+            restartGame={handleRestart}
+            isEnd={isEnd}
+          />
+        </div>
       </div>
     </div>
   );
