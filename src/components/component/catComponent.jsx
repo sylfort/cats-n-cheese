@@ -33,16 +33,17 @@ const CatComponent = () => {
     setStartGame(true);
     setIsEnd(false);
     setCats([]);
-    setPlayers({})
+    setPlayers({});
     setCheeseAmounts({});
     setRounds(1);
     setWinner(null);
     setScores({});
-  }
+  };
+
   const handleStartGame = () => {
     setStartGame(false);
 
-  // useEffect(() => {
+    // useEffect(() => {
     const initialCats = [
       new Cat("Warrior Cat"),
       new Cat("Gangster Cat"),
@@ -69,11 +70,13 @@ const CatComponent = () => {
 
     // update the cats state
     setCats(initialCats);
+
     // update the players state
     setPlayers({ singlePlayer, computer });
+
     // Update the state of the cheese
     setCheeseAmounts(initialCheeseAmounts);
-  // }, []);
+    // }, []);
   };
   const handlePlayerSelection = (id) => {
     console.log(rounds);
@@ -145,14 +148,17 @@ const CatComponent = () => {
     } else {
       setWinner(`It's a tie between ${winners.join(" and ")}`);
     }
-    setIsEnd(true);
 
+    setIsEnd(true);
   };
 
   const handleRestart = () => {
     console.log("Game restarted");
+
     setStartGame(false);
+
     handleStartGame();
+
     // Reset players using the Player class constructor
     const singlePlayer = new Player("Player");
     const computer = new Player("Computer");
@@ -181,13 +187,15 @@ const CatComponent = () => {
     // Reset round
     setRounds(1);
 
-    // Clear scores and winner
+    // Reset scores
     setScores((prevScores) => {
       return Object.keys(prevScores).reduce((acc, initialKeys) => {
         acc[initialKeys] = 0;
         return acc;
       }, {});
     });
+
+    // Reset winner
     setWinner(null);
   };
 
@@ -217,6 +225,7 @@ const CatComponent = () => {
                 className="rounded"
               />
             </div>
+
             <span className="mt-2 text-sm sm:text-base">
               {cat.name}
               <div className="flex justify-center mt-1">
@@ -230,67 +239,66 @@ const CatComponent = () => {
           </button>
         ))}
       </div>
+
       <div className="flex flex-col items-center space-y-2">
         <div>
-          {startGame ? <button
-                onClick={handleStartGame}
-                className="px-4 py-2 font-bold text-white bg-blue-500 rounded hover:bg-blue-700"
+          {startGame ? (
+            <button
+              onClick={handleStartGame}
+              className="px-4 py-2 font-bold text-white bg-blue-500 rounded hover:bg-blue-700"
+            >
+              <p> Start</p>
+              {/* <p onClick={onClick}>End Game</p> */}
+            </button>
+          ) : (
+            <EndGameModal onClick={handleShowStatistics} />
+          )}
+
+          {isEnd && (
+            <div
+              className="fixed inset-0 w-full h-full overflow-y-auto bg-gray-600 bg-opacity-50"
+              onClick={toggleModal}
+            >
+              <div
+                className="relative w-11/12 p-5 mx-auto bg-white border rounded-md shadow-lg top-20 md:w-3/4 lg:w-1/2"
+                onClick={(e) => e.stopPropagation()}
               >
-                <p> Start</p>
-                {/* <p onClick={onClick}>End Game</p> */}
-              </button>:<EndGameModal
-            onClick={handleShowStatistics}
-          />}
+                <div className="flex items-center justify-between">
+                  <h3 className="text-lg font-bold">Game ended.</h3>
+                </div>
 
-      {isEnd  && (<div
-          className="fixed inset-0 w-full h-full overflow-y-auto bg-gray-600 bg-opacity-50"
-          onClick={toggleModal}
-        >
-       <div
-            className="relative w-11/12 p-5 mx-auto bg-white border rounded-md shadow-lg top-20 md:w-3/4 lg:w-1/2"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div className="flex items-center justify-between">
-              <h3 className="text-lg font-bold">Game ended.</h3>
-            </div>
+                <div className="mt-2 overflow-y-auto max-h-[70vh]">
+                  <p className="mt-2">{winner}</p>
 
-            <div className="mt-2 overflow-y-auto max-h-[70vh]">
-              
-            <p className="mt-2">{winner}</p>
+                  <div className="mt-2">
+                    {Object.entries(scores).map(([name, points]) => (
+                      <p key={name}>{`${name}'s score = ${points}`}</p>
+                    ))}
+                  </div>
+                </div>
 
-            <div className="mt-2">
-              {Object.entries(scores).map(([name, points]) => (
-                <p key={name}>{`${name}'s score = ${points}`}</p>
-              ))}
-            </div>              
-              
+                <button
+                  className="mt-2 px-4 py-2 font-bold text-white bg-blue-500 rounded hover:bg-blue-700"
+                  onClick={() => {
+                    handleRestart();
+                    toggleModal();
+                  }}
+                >
+                  Restart Game
+                </button>
+
+                <button
+                  className="ml-2 mt-2 px-4 py-2 font-bold text-white bg-blue-500 rounded hover:bg-blue-700"
+                  onClick={() => {
+                    toggleModal();
+                    handleExit();
+                  }}
+                >
+                  Exit game
+                </button>
               </div>
-
-            <button
-              className="mt-2 px-4 py-2 font-bold text-white bg-blue-500 rounded hover:bg-blue-700"
-              onClick={() => {
-                handleRestart();
-                toggleModal();
-              }}
-            >
-              Restart Game
-            </button>
-
-
-            <button
-              className="ml-2 mt-2 px-4 py-2 font-bold text-white bg-blue-500 rounded hover:bg-blue-700"
-              onClick={() => {
-                toggleModal();
-                handleExit();
-              }}
-            >
-              Exit game
-            </button>
-
-          </div>
-        </div>)}
-
-
+            </div>
+          )}
         </div>
       </div>
     </div>
