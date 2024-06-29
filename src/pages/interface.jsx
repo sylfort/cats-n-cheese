@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Info } from "lucide-react";
 import Image from "next/image";
 import Logo from "@/assets/logo.png";
@@ -10,6 +10,7 @@ const CatsNCheeseUI = () => {
   const [actionLogs, setActionLogs] = useState([]);
   const logContainerRef = useRef(null);
   const [rounds, setRounds] = useState(0);
+  const [points, setPoints] = useState(null);
   const toggleModal = () => setModalOpen(!modalOpen);
 
   const addLog = (log) => {
@@ -71,12 +72,13 @@ const CatsNCheeseUI = () => {
             </div>
             <div className="flex-grow p-2 bg-white shadow-lg rounded-xl">
               <div className="text-sm font-semibold text-gray-700 md:text-base">
-                Player points
+                Player points - {points ? points[0].points : 0}
+                {/* {console.log(typeof points)} */}
               </div>
             </div>
             <div className="flex-grow p-2 bg-white shadow-lg rounded-xl">
               <div className="text-sm font-semibold text-gray-700 md:text-base">
-                CPU1 points
+                CPU1 points - {points ? points[1].points : 0}
               </div>
             </div>
           </div>
@@ -87,6 +89,7 @@ const CatsNCheeseUI = () => {
               addLog={addLog}
               roundNumber={setRounds}
               clearLog={clearLog}
+              points={setPoints}
             />
           </div>
 
@@ -94,12 +97,12 @@ const CatsNCheeseUI = () => {
           <div className="flex flex-col col-span-2 space-y-4">
             <div className="flex-grow p-2 bg-white shadow-lg rounded-xl">
               <div className="text-sm font-semibold text-gray-700 md:text-base">
-                CPU2 points
+                CPU2 points - {points ? points[2].points : 0}
               </div>
             </div>
             <div className="flex-grow p-2 bg-white shadow-lg rounded-xl">
               <div className="text-sm font-semibold text-gray-700 md:text-base">
-                CPU3 points
+                CPU3 points - {points ? points[3].points : 0}
               </div>
             </div>
             <div className="flex-grow p-2 bg-white shadow-lg rounded-xl">
