@@ -130,7 +130,10 @@ const CatsNCheeseUI = () => {
       <footer className="p-4 text-center text-gray-600 bg-white shadow-md">
         <p>
           © 2024 Cats n&apos; Cheese |{" "}
-          <a href="#" className="text-purple-600 hover:underline">
+          <a
+            href="https://github.com/sylfort/cats-n-cheese"
+            className="text-purple-600 hover:underline"
+          >
             GitHub
           </a>
         </p>
