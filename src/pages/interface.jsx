@@ -26,6 +26,10 @@ const CatsNCheeseUI = () => {
     }, 500); // Duration of the animation
   };
 
+  const clearLog = () => {
+    setActionLogs([]);
+  };
+
   useEffect(() => {
     if (logContainerRef.current) {
       logContainerRef.current.scrollTop = logContainerRef.current.scrollHeight;
@@ -79,7 +83,11 @@ const CatsNCheeseUI = () => {
 
           {/* Center Column */}
           <div className="col-span-8 overflow-hidden bg-white shadow-lg rounded-xl">
-            <CatComponent addLog={addLog} roundNumber={setRounds} />
+            <CatComponent
+              addLog={addLog}
+              roundNumber={setRounds}
+              clearLog={clearLog}
+            />
           </div>
 
           {/* Right Column */}
@@ -111,9 +119,9 @@ const CatsNCheeseUI = () => {
               Log of actions
             </div>
             <div className="mt-2 space-y-1">
-              {actionLogs.map((log) => (
+              {actionLogs.map((log, index) => (
                 <p
-                  key={log.id}
+                  key={`${log.id}-${index}`}
                   className={`text-sm text-gray-600 transition-all duration-500 ease-in-out
                     ${
                       log.isNew

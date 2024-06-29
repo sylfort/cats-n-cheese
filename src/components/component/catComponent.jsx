@@ -18,7 +18,7 @@ import cheese4 from "@/assets/cheese_4.png";
 const catImages = [warriorCat, gangsterCat, pirateCat, wizardCat];
 const cheeseImages = [cheese1, cheese2, cheese3, cheese4];
 
-const CatComponent = ({ roundNumber, addLog }) => {
+const CatComponent = ({ addLog, clearLog }) => {
   const [cats, setCats] = useState([]);
   const [players, setPlayers] = useState({
     human: null,
@@ -43,14 +43,13 @@ const CatComponent = ({ roundNumber, addLog }) => {
     setPlayers({});
     setCheeseAmounts({});
     setRounds(1);
-    roundNumber(0);
     setWinner(null);
     setScores({});
+    clearLog();
   };
 
   const handleStartGame = () => {
     setStartGame(false);
-    roundNumber(1);
 
     const initialCats = [
       new Cat("Warrior Cat"),
@@ -87,7 +86,7 @@ const CatComponent = ({ roundNumber, addLog }) => {
 
   const handlePlayerSelection = (id) => {
     // Show winner after 8 rounds
-    if (rounds >= 8) {
+    if (rounds > 8) {
       handleShowStatistics();
       return;
     }
@@ -110,7 +109,6 @@ const CatComponent = ({ roundNumber, addLog }) => {
 
     // increment the number of rounds
     setRounds(rounds + 1);
-    roundNumber(rounds + 1);
 
     const selections = [
       humanSelection,
@@ -188,9 +186,9 @@ const CatComponent = ({ roundNumber, addLog }) => {
     console.log("Game restarted");
     handleStartGame();
     setRounds(1);
-    roundNumber(1);
     setScores({});
     setWinner(null);
+    clearLog();
   };
 
   const renderCheeseImages = (amount) => {
@@ -209,7 +207,7 @@ const CatComponent = ({ roundNumber, addLog }) => {
 
     return images.map((cheeseImage, index) => (
       <Image
-        key={index}
+        key={`${cheeseImage}-${index}`}
         src={cheeseImage}
         alt={`Cheese ${index + 1}`}
         width={68}
