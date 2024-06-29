@@ -1,40 +1,75 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+<img src="https://github.com/sylfort/cats-n-cheese/assets/24916160/ca222744-9e82-497e-ad5c-b6412e03491f" alt="Cats n' Cheese Logo" width="250" heigth="250"/>
 
-## Getting Started
+## 🎮 [Play Now](https://cats-n-cheese.vercel.app)
 
-First, run the development server:
+Cats n' Cheese is a multiplayer game where players act as mice stealing cheese from cats, it's all about strategy and fun! 
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+You can check the game here: [`cats-n-cheese.vercel.app`](https://cats-n-cheese.vercel.app)
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Created for the [MeltingHack](https://melting-hack.tokyo/home) Sprint#2 Hackathon
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+## 🐱 Game Overview
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
+- **Players**: 4 players (1 human, 3 computer-controlled)
+- **Rounds**: 8 rounds per game
+- **Objective**: Collect the most cheese cards by the end of the game
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+## 📜 How to Play
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+1. **Setup**: Each cat starts with 1-4 cheese slices.
+2. **Target Selection**: Players secretly choose which cat to steal from by clicking on a cat card.
+3. **Cheese Collection**: 
+   - If you're the only player targeting a cat, you successfully steal all its cheese!
+   - If multiple players target the same cat, the cat becomes aware, and no one gets the cheese.
+4. **Round Progression**: Cats receive new cheese each round, increasing their cheese pile.
 
-## Learn More
+## 🏆 Winning the Game
 
-To learn more about Next.js, take a look at the following resources:
+The mouse (player) with the most collected cheese at the end of 8 rounds wins!
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 🛠 Technical Stack
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+- React
+- Tailwind CSS
+- Next.js
+- Deployed on Vercel
 
-## Deploy on Vercel
+This is a [Next.js](https://nextjs.org/) project bootstrapped with [create-next-app](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 🚀 Cloning the project
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+1. Clone the repository:
+   ```
+   git clone https://github.com/your-username/cats-n-cheese.git
+   ```
+2. Install dependencies:
+   ```
+   cd cats-n-cheese
+   npm install
+   ```
+3. Run the development server:
+   ```bash
+   npm run dev
+   # or
+   yarn dev
+   # or
+   pnpm dev
+   # or
+   bun dev
+   ```
+4. Open [http://localhost:3000](http://localhost:3000) in your browser.
+
+## 👥 Team Members
+We're proud of our diverse and talented team that brought Cats n' Cheese to life:
+
+- [dominic-source](https://github.com/dominic-source)
+- [Tchalla](https://github.com/Tch4lla)
+- [iamzaidmohammed](https://github.com/iamzaidmohammed)
+- [sylfort](https://github.com/sylfort)
+
+## 🙏 Acknowledgments
+
+- Thanks to all participants and organizers of the [MeltingHack](https://melting-hack.tokyo/home) Sprint#2 Hackathon!
+- You can join MeltingHack discord here: https://discord.gg/pQkTecRR
+
+Enjoy playing Cats n' Cheese, and may the sneakiest mouse win! 🐭🧀
