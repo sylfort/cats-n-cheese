@@ -1,8 +1,7 @@
-import { useEffect, useState } from "react";
+import { useState, useMemo } from "react";
 import Image from "next/image";
 import Cat from "@/utils/cat";
 import Player from "@/utils/player";
-import GameRulesModal from "@/components/component/rules";
 import EndGameModal from "./endGameModal";
 import CheeseIcon from "@/components/cheeseIcon";
 
@@ -63,23 +62,29 @@ const CatComponent = () => {
     const computer2 = new Player("Computer 2");
     const computer3 = new Player("Computer 3");
 
+    // update the amount of cheese on each cat, this is mandatory
     let id = 0;
     for (const cat of initialCats) {
       cat.id = ++id;
-      cat.amountOfCheese = Math.floor(Math.random() * 4) + 1; // Random cheese amount between 1 and 4
+      cat.amountOfCheese = initialCats; // Random cheese amount between 1 and 4
     }
 
     const initialCheeseAmounts = initialCats.reduce((acc, cat) => {
+      // prepare for a state update
       acc[cat.name] = cat.amountOfCheese;
       return acc;
     }, {});
 
+    // update the cats state
     setCats(initialCats);
+
+    // update the players state
     setPlayers({ human: humanPlayer, computer1, computer2, computer3 });
     setCheeseAmounts(initialCheeseAmounts);
   };
 
   const handlePlayerSelection = (id) => {
+    // Show winner after 8 rounds
     if (rounds > 8) {
       handleShowStatistics();
       return;
@@ -101,6 +106,7 @@ const CatComponent = () => {
       return;
     }
 
+    // increment the number of rounds
     setRounds(rounds + 1);
 
     const selections = [
@@ -202,15 +208,48 @@ const CatComponent = () => {
         key={index}
         src={cheeseImage}
         alt={`Cheese ${index + 1}`}
-        width={64}
+        width={68}
         height={"auto"}
         className="inline-block mt-1 mr-1"
       />
     ));
   };
 
+  const svgPattern = useMemo(() => {
+    const patternSize = 50;
+    const mazeLines = [
+      "M0 0h50v50h-50z",
+      "M10 0v50",
+      "M20 0v30m0 20v0",
+      "M30 10h20",
+      "M40 20v30",
+      "M0 30h30",
+      "M10 40h30",
+    ];
+
+    const svgContent = `
+      <svg xmlns="http://www.w3.org/2000/svg" width="${patternSize}" height="${patternSize}">
+        <rect width="${patternSize}" height="${patternSize}" fill="#f9fafb" />
+        <path d="${mazeLines.join(
+          " "
+        )}" fill="none" stroke="#d1d5db" stroke-width="1" />
+      </svg>
+    `;
+
+    const encodedSVG = encodeURIComponent(svgContent);
+    return `url("data:image/svg+xml,${encodedSVG}")`;
+  }, []);
+
   return (
-    <div className="flex flex-col items-center justify-center w-full h-full p-4 space-y-4">
+    <div
+      className="flex flex-col items-center justify-center w-full h-full p-4 space-y-4"
+      style={{
+        backgroundImage: svgPattern,
+        backgroundSize: "18px 18px",
+        backgroundRepeat: "repeat",
+        backgroundPosition: "0 0",
+      }}
+    >
       <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
         {cats.map((cat, index) => (
           <button

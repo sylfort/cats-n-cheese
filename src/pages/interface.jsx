@@ -11,7 +11,7 @@ const CatsNCheeseUI = () => {
   return (
     <div className="flex flex-col min-h-screen bg-gradient-to-br from-blue-100 to-purple-100">
       {/* Header */}
-      <header className="flex items-center justify-between p-4 bg-white shadow-md">
+      <header className="flex items-center justify-between p-2 bg-white shadow-md">
         <div className="flex items-center space-x-2">
           <img
             src="/logo.png"
@@ -32,78 +32,55 @@ const CatsNCheeseUI = () => {
       </header>
 
       {/* Main Content */}
-      <main className="flex-grow p-8">
-        <div className="grid grid-cols-[repeat(36,1fr)] grid-rows-[repeat(36,1fr)] gap-1 h-[calc(100vh-12rem)] max-w-6xl mx-auto">
-          <div
-            style={{ gridColumn: "1 / span 6", gridRow: "1 / span 6" }}
-            className="flex flex-col items-center justify-center p-2 transition duration-300 bg-white shadow-lg rounded-xl hover:shadow-xl hover:bg-blue-50"
-          >
-            <div className="flex flex-col items-center text-sm font-semibold text-gray-700 md:text-base">
-              <span>Test</span>
+      <main className="flex-grow p-4">
+        <div className="grid grid-cols-12 gap-4 h-[calc(100vh-8rem)]">
+          {/* Left Column */}
+          <div className="flex flex-col col-span-2 space-y-4">
+            <div className="flex-grow p-2 bg-white shadow-lg rounded-xl">
+              <div className="text-sm font-semibold text-gray-700 md:text-base">
+                Test
+              </div>
+            </div>
+            <div className="flex-grow p-2 bg-white shadow-lg rounded-xl">
+              <div className="text-sm font-semibold text-gray-700 md:text-base">
+                CPU1 points
+              </div>
+            </div>
+            <div className="flex-grow p-2 bg-white shadow-lg rounded-xl">
+              <div className="text-sm font-semibold text-gray-700 md:text-base">
+                Player points
+              </div>
             </div>
           </div>
-          <div
-            style={{ gridColumn: "16 / span 6", gridRow: "1 / span 6" }}
-            className="flex flex-col items-center justify-center p-2 transition duration-300 bg-white shadow-lg rounded-xl hover:shadow-xl hover:bg-blue-50"
-          >
-            <div className="flex flex-col items-center text-sm font-semibold text-gray-700 md:text-base">
-              <span>CPU2 points</span>
+
+          {/* Center Column */}
+          <div className="col-span-8 overflow-hidden bg-white shadow-lg rounded-xl">
+            <CatComponent />
+          </div>
+
+          {/* Right Column */}
+          <div className="flex flex-col col-span-2 space-y-4">
+            <div className="flex-grow p-2 bg-white shadow-lg rounded-xl">
+              <div className="text-sm font-semibold text-gray-700 md:text-base">
+                CPU2 points
+              </div>
+            </div>
+            <div className="flex-grow p-2 bg-white shadow-lg rounded-xl">
+              <div className="text-sm font-semibold text-gray-700 md:text-base">
+                CPU3 points
+              </div>
+            </div>
+            <div className="flex-grow p-2 bg-white shadow-lg rounded-xl">
+              <div className="text-sm font-semibold text-gray-700 md:text-base">
+                End Game Button
+              </div>
             </div>
           </div>
-          <div
-            style={{ gridColumn: "31 / span 6", gridRow: "1 / span 6" }}
-            className="flex flex-col items-center justify-center p-2 transition duration-300 bg-white shadow-lg rounded-xl hover:shadow-xl hover:bg-blue-50"
-          >
-            <div className="flex flex-col items-center text-sm font-semibold text-gray-700 md:text-base">
-              <span>Test</span>
-            </div>
-          </div>
-          <div
-            style={{ gridColumn: "1 / span 6", gridRow: "16 / span 6" }}
-            className="flex flex-col items-center justify-center p-2 transition duration-300 bg-white shadow-lg rounded-xl hover:shadow-xl hover:bg-blue-50"
-          >
-            <div className="flex flex-col items-center text-sm font-semibold text-gray-700 md:text-base">
-              <span>CPU1 points</span>
-            </div>
-          </div>
-          <div
-            style={{ gridColumn: "31 / span 6", gridRow: "16 / span 6" }}
-            className="flex flex-col items-center justify-center p-2 transition duration-300 bg-white shadow-lg rounded-xl hover:shadow-xl hover:bg-blue-50"
-          >
-            <div className="flex flex-col items-center text-sm font-semibold text-gray-700 md:text-base">
-              <span>CPU3 points</span>
-            </div>
-          </div>
-          <div
-            style={{ gridColumn: "1 / span 6", gridRow: "31 / span 6" }}
-            className="flex flex-col items-center justify-center p-2 transition duration-300 bg-white shadow-lg rounded-xl hover:shadow-xl hover:bg-blue-50"
-          >
-            <div className="flex flex-col items-center text-sm font-semibold text-gray-700 md:text-base">
-              <span>Player points</span>
-            </div>
-          </div>
-          <div
-            style={{ gridColumn: "12 / span 14", gridRow: "31 / span 6" }}
-            className="flex flex-col items-center justify-center p-2 transition duration-300 bg-white shadow-lg rounded-xl hover:shadow-xl hover:bg-blue-50"
-          >
-            <div className="flex flex-col items-center text-sm font-semibold text-gray-700 md:text-base">
-              <span>Log of actions</span>
-            </div>
-          </div>
-          <div
-            style={{ gridColumn: "31 / span 6", gridRow: "31 / span 6" }}
-            className="flex flex-col items-center justify-center p-2 transition duration-300 bg-white shadow-lg rounded-xl hover:shadow-xl hover:bg-blue-50"
-          >
-            <div className="flex flex-col items-center text-sm font-semibold text-gray-700 md:text-base">
-              <span>End Game Button</span>
-            </div>
-          </div>
-          <div
-            style={{ gridColumn: "7 / span 24", gridRow: "7 / span 24" }}
-            className="flex flex-col items-center justify-center p-2 overflow-hidden transition duration-300 shadow-lg bg-gradient-to-br from-yellow-200 to-yellow-400 rounded-xl hover:shadow-xl"
-          >
-            <div className="w-full h-full overflow-auto">
-              <CatComponent />
+
+          {/* Bottom Row */}
+          <div className="col-span-12 p-2 bg-white shadow-lg rounded-xl">
+            <div className="text-sm font-semibold text-gray-700 md:text-base">
+              Log of actions
             </div>
           </div>
         </div>
@@ -112,7 +89,7 @@ const CatsNCheeseUI = () => {
       {/* Footer */}
       <footer className="p-4 text-center text-gray-600 bg-white shadow-md">
         <p>
-          Â© 2024 Cats n&apos; Cheese |{" "}
+          © 2024 Cats n&apos; Cheese |{" "}
           <a href="#" className="text-purple-600 hover:underline">
             GitHub
           </a>
