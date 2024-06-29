@@ -1,5 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Info } from "lucide-react";
+import Image from "next/image";
+import Logo from "@/assets/logo.png";
 import CatComponent from "@/components/component/catComponent";
 import GameRulesModal from "@/components/component/rules";
 
@@ -7,6 +9,7 @@ const CatsNCheeseUI = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [actionLogs, setActionLogs] = useState([]);
   const logContainerRef = useRef(null);
+  const [rounds, setRounds] = useState(0);
   const toggleModal = () => setModalOpen(!modalOpen);
 
   const addLog = (log) => {
@@ -34,8 +37,8 @@ const CatsNCheeseUI = () => {
       {/* Header */}
       <header className="flex items-center justify-between p-2 bg-white shadow-md">
         <div className="flex items-center space-x-2">
-          <img
-            src="/logo.png"
+          <Image
+            src={Logo}
             alt="Cats n' Cheese Logo"
             className="w-12 h-12 rounded-full"
           />
@@ -59,12 +62,7 @@ const CatsNCheeseUI = () => {
           <div className="flex flex-col col-span-2 space-y-4">
             <div className="flex-grow p-2 bg-white shadow-lg rounded-xl">
               <div className="text-sm font-semibold text-gray-700 md:text-base">
-                Test
-              </div>
-            </div>
-            <div className="flex-grow p-2 bg-white shadow-lg rounded-xl">
-              <div className="text-sm font-semibold text-gray-700 md:text-base">
-                CPU1 points
+                Round - {rounds}
               </div>
             </div>
             <div className="flex-grow p-2 bg-white shadow-lg rounded-xl">
@@ -72,11 +70,16 @@ const CatsNCheeseUI = () => {
                 Player points
               </div>
             </div>
+            <div className="flex-grow p-2 bg-white shadow-lg rounded-xl">
+              <div className="text-sm font-semibold text-gray-700 md:text-base">
+                CPU1 points
+              </div>
+            </div>
           </div>
 
           {/* Center Column */}
           <div className="col-span-8 overflow-hidden bg-white shadow-lg rounded-xl">
-            <CatComponent addLog={addLog} />
+            <CatComponent addLog={addLog} roundNumber={setRounds} />
           </div>
 
           {/* Right Column */}
