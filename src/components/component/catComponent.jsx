@@ -18,7 +18,7 @@ import cheese4 from "@/assets/cheese_4.png";
 const catImages = [warriorCat, gangsterCat, pirateCat, wizardCat];
 const cheeseImages = [cheese1, cheese2, cheese3, cheese4];
 
-const CatComponent = () => {
+const CatComponent = ({ addLog }) => {
   const [cats, setCats] = useState([]);
   const [players, setPlayers] = useState({
     human: null,
@@ -128,14 +128,14 @@ const CatComponent = () => {
       const selectedCat = selections[index];
       if (selectionCounts[selectedCat.name] === 1) {
         player.addPoints(selectedCat.amountOfCheese);
-        console.log(`
-          ${player.name} selected ${selectedCat.name} and scored ${selectedCat.amountOfCheese} points. Total points = ${player.points}
-        `);
+        const log = `${player.name} selected ${selectedCat.name} and scored ${selectedCat.amountOfCheese} points. Total points = ${player.points}`;
+        addLog(log);
+        console.log(log);
         selectedCat.resetAmountOfCheese();
       } else {
-        console.log(`
-          ${player.name} selected ${selectedCat.name} but scored 0 points due to duplicate selection. Total points = ${player.points}
-        `);
+        const log = `${player.name} selected ${selectedCat.name} but scored 0 points due to duplicate selection. Total points = ${player.points}`;
+        addLog(log);
+        console.log(log);
       }
     });
 

@@ -1,12 +1,33 @@
-import React from "react";
-import { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { Info } from "lucide-react";
 import CatComponent from "@/components/component/catComponent";
 import GameRulesModal from "@/components/component/rules";
 
 const CatsNCheeseUI = () => {
   const [modalOpen, setModalOpen] = useState(false);
+  const [actionLogs, setActionLogs] = useState([]);
+  const logContainerRef = useRef(null);
   const toggleModal = () => setModalOpen(!modalOpen);
+
+  const addLog = (log) => {
+    const newLog = { text: log, isNew: true, id: Date.now() };
+    setActionLogs((prevLogs) => [...prevLogs, newLog]);
+
+    // Remove the 'isNew' flag after the animation
+    setTimeout(() => {
+      setActionLogs((prevLogs) =>
+        prevLogs.map((log) =>
+          log.id === newLog.id ? { ...log, isNew: false } : log
+        )
+      );
+    }, 500); // Duration of the animation
+  };
+
+  useEffect(() => {
+    if (logContainerRef.current) {
+      logContainerRef.current.scrollTop = logContainerRef.current.scrollHeight;
+    }
+  }, [actionLogs]);
 
   return (
     <div className="flex flex-col min-h-screen bg-gradient-to-br from-blue-100 to-purple-100">
@@ -33,7 +54,7 @@ const CatsNCheeseUI = () => {
 
       {/* Main Content */}
       <main className="flex-grow p-4">
-        <div className="grid grid-cols-12 gap-4 h-[calc(100vh-8rem)]">
+        <div className="grid grid-cols-12 gap-4 h-[calc(100vh-12rem)]">
           {/* Left Column */}
           <div className="flex flex-col col-span-2 space-y-4">
             <div className="flex-grow p-2 bg-white shadow-lg rounded-xl">
@@ -55,7 +76,7 @@ const CatsNCheeseUI = () => {
 
           {/* Center Column */}
           <div className="col-span-8 overflow-hidden bg-white shadow-lg rounded-xl">
-            <CatComponent />
+            <CatComponent addLog={addLog} />
           </div>
 
           {/* Right Column */}
@@ -77,10 +98,29 @@ const CatsNCheeseUI = () => {
             </div>
           </div>
 
-          {/* Bottom Row */}
-          <div className="col-span-12 p-2 bg-white shadow-lg rounded-xl">
+          {/* Bottom Row - Log of actions */}
+          <div
+            ref={logContainerRef}
+            className="col-span-12 p-2 overflow-y-auto bg-white shadow-lg rounded-xl"
+            style={{ maxHeight: "105px" }}
+          >
             <div className="text-sm font-semibold text-gray-700 md:text-base">
               Log of actions
+            </div>
+            <div className="mt-2 space-y-1">
+              {actionLogs.map((log) => (
+                <p
+                  key={log.id}
+                  className={`text-sm text-gray-600 transition-all duration-500 ease-in-out
+                    ${
+                      log.isNew
+                        ? "bg-yellow-100 scale-102"
+                        : "bg-transparent scale-100"
+                    }`}
+                >
+                  {log.text}
+                </p>
+              ))}
             </div>
           </div>
         </div>
