@@ -2,7 +2,7 @@ export default class Cat {
   constructor(name) {
     this.id = 0;
     this.name = name;
-    this._amountOfCheese = 0
+    this._amountOfCheese = 0;
   }
 
   get amountOfCheese() {
@@ -10,11 +10,11 @@ export default class Cat {
   }
 
   set amountOfCheese(cats) {
-    this._amountOfCheese =  this._randomAmountOfCheese(cats);
+    this._amountOfCheese = this._randomAmountOfCheese(cats);
   }
 
   _randomAmountOfCheese(cats) {
-    return Math.floor(Math.random() * cats.length) + 1;
+    return Math.floor(Math.random() * 4) + 1;
   }
 
   resetAmountOfCheese(cats) {

@@ -1,29 +1,17 @@
 import React from "react";
 import { useState } from "react";
-import { Info, Mouse, Lamp } from "lucide-react";
+import { Info } from "lucide-react";
 import CatComponent from "@/components/component/catComponent";
 import GameRulesModal from "@/components/component/rules";
 
 const CatsNCheeseUI = () => {
-  const gridItems = [
-    { id: 0, col: "1 / span 6", row: "1 / span 6" },
-    { id: 1, col: "16 / span 6", row: "1 / span 6" },
-    { id: 2, col: "31 / span 6", row: "1 / span 6" },
-    { id: 3, col: "1 / span 6", row: "16 / span 6" },
-    { id: 4, col: "31 / span 6", row: "16 / span 6" },
-    { id: 5, col: "1 / span 6", row: "31 / span 6" },
-    { id: 6, col: "16 / span 6", row: "31 / span 6" },
-    { id: 7, col: "31 / span 6", row: "31 / span 6" },
-    { id: 8, col: "7 / span 24", row: "7 / span 24", isCenter: true },
-  ];
-
   const [modalOpen, setModalOpen] = useState(false);
   const toggleModal = () => setModalOpen(!modalOpen);
 
   return (
     <div className="flex flex-col min-h-screen bg-gradient-to-br from-blue-100 to-purple-100">
       {/* Header */}
-      <header className="flex items-center justify-between p-4 bg-white shadow-md">
+      <header className="flex items-center justify-between p-2 bg-white shadow-md">
         <div className="flex items-center space-x-2">
           <img
             src="/logo.png"
@@ -44,30 +32,57 @@ const CatsNCheeseUI = () => {
       </header>
 
       {/* Main Content */}
-      <main className="flex-grow p-8">
-        <div className="grid grid-cols-[repeat(36,1fr)] grid-rows-[repeat(36,1fr)] gap-1 h-[calc(100vh-12rem)] max-w-6xl mx-auto">
-          {gridItems.map((item) => (
-            <div
-              key={item.id}
-              style={{ gridColumn: item.col, gridRow: item.row }}
-              className={`bg-white rounded-xl shadow-lg p-2 flex flex-col items-center justify-center transition duration-300 hover:shadow-xl
-                ${
-                  item.isCenter
-                    ? "bg-gradient-to-br from-yellow-200 to-yellow-400 overflow-hidden"
-                    : "hover:bg-blue-50"
-                }`}
-            >
-              {item.isCenter ? (
-                <div className="w-full h-full overflow-auto">
-                  <CatComponent />
-                </div>
-              ) : (
-                <div className="flex flex-col items-center text-sm font-semibold text-gray-700 md:text-base">
-                  <span>Test</span>
-                </div>
-              )}
+      <main className="flex-grow p-4">
+        <div className="grid grid-cols-12 gap-4 h-[calc(100vh-8rem)]">
+          {/* Left Column */}
+          <div className="flex flex-col col-span-2 space-y-4">
+            <div className="flex-grow p-2 bg-white shadow-lg rounded-xl">
+              <div className="text-sm font-semibold text-gray-700 md:text-base">
+                Test
+              </div>
             </div>
-          ))}
+            <div className="flex-grow p-2 bg-white shadow-lg rounded-xl">
+              <div className="text-sm font-semibold text-gray-700 md:text-base">
+                CPU1 points
+              </div>
+            </div>
+            <div className="flex-grow p-2 bg-white shadow-lg rounded-xl">
+              <div className="text-sm font-semibold text-gray-700 md:text-base">
+                Player points
+              </div>
+            </div>
+          </div>
+
+          {/* Center Column */}
+          <div className="col-span-8 overflow-hidden bg-white shadow-lg rounded-xl">
+            <CatComponent />
+          </div>
+
+          {/* Right Column */}
+          <div className="flex flex-col col-span-2 space-y-4">
+            <div className="flex-grow p-2 bg-white shadow-lg rounded-xl">
+              <div className="text-sm font-semibold text-gray-700 md:text-base">
+                CPU2 points
+              </div>
+            </div>
+            <div className="flex-grow p-2 bg-white shadow-lg rounded-xl">
+              <div className="text-sm font-semibold text-gray-700 md:text-base">
+                CPU3 points
+              </div>
+            </div>
+            <div className="flex-grow p-2 bg-white shadow-lg rounded-xl">
+              <div className="text-sm font-semibold text-gray-700 md:text-base">
+                End Game Button
+              </div>
+            </div>
+          </div>
+
+          {/* Bottom Row */}
+          <div className="col-span-12 p-2 bg-white shadow-lg rounded-xl">
+            <div className="text-sm font-semibold text-gray-700 md:text-base">
+              Log of actions
+            </div>
+          </div>
         </div>
       </main>
 
