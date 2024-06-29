@@ -18,7 +18,7 @@ import cheese4 from "@/assets/cheese_4.png";
 const catImages = [warriorCat, gangsterCat, pirateCat, wizardCat];
 const cheeseImages = [cheese1, cheese2, cheese3, cheese4];
 
-const CatComponent = ({ roundNumber }) => {
+const CatComponent = ({ roundNumber, addLog, clearLog }) => {
   const [cats, setCats] = useState([]);
   const [players, setPlayers] = useState({
     human: null,
@@ -43,9 +43,10 @@ const CatComponent = ({ roundNumber }) => {
     setPlayers({});
     setCheeseAmounts({});
     setRounds(1);
-    roundNumber(0);
     setWinner(null);
     setScores({});
+    clearLog();
+    roundNumber(0);
   };
 
   const handleStartGame = () => {
@@ -131,14 +132,14 @@ const CatComponent = ({ roundNumber }) => {
       const selectedCat = selections[index];
       if (selectionCounts[selectedCat.name] === 1) {
         player.addPoints(selectedCat.amountOfCheese);
-        console.log(`
-          ${player.name} selected ${selectedCat.name} and scored ${selectedCat.amountOfCheese} points. Total points = ${player.points}
-        `);
+        const log = `${player.name} selected ${selectedCat.name} and scored ${selectedCat.amountOfCheese} points. Total points = ${player.points}`;
+        addLog(log);
+        console.log(log);
         selectedCat.resetAmountOfCheese();
       } else {
-        console.log(`
-          ${player.name} selected ${selectedCat.name} but scored 0 points due to duplicate selection. Total points = ${player.points}
-        `);
+        const log = `${player.name} selected ${selectedCat.name} but scored 0 points due to duplicate selection. Total points = ${player.points}`;
+        addLog(log);
+        console.log(log);
       }
     });
 
@@ -188,9 +189,9 @@ const CatComponent = ({ roundNumber }) => {
     console.log("Game restarted");
     handleStartGame();
     setRounds(1);
-    roundNumber(1);
     setScores({});
     setWinner(null);
+    clearLog();
   };
 
   const renderCheeseImages = (amount) => {
@@ -209,7 +210,7 @@ const CatComponent = ({ roundNumber }) => {
 
     return images.map((cheeseImage, index) => (
       <Image
-        key={index}
+        key={`${cheeseImage}-${index}`}
         src={cheeseImage}
         alt={`Cheese ${index + 1}`}
         width={68}
