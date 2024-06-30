@@ -3,22 +3,20 @@ import Image from "next/image";
 import Cat from "@/utils/cat";
 import Player from "@/utils/player";
 import EndGameModal from "./endGameModal";
-import CheeseIcon from "@/components/cheeseIcon";
-
 import warriorCat from "@/assets/red.png";
 import gangsterCat from "@/assets/green.png";
 import pirateCat from "@/assets/pink.png";
 import wizardCat from "@/assets/blue.png";
-
 import cheese1 from "@/assets/cheese_1.png";
 import cheese2 from "@/assets/cheese_2.png";
 import cheese3 from "@/assets/cheese_3.png";
 import cheese4 from "@/assets/cheese_4.png";
 
 const catImages = [warriorCat, gangsterCat, pirateCat, wizardCat];
+
 const cheeseImages = [cheese1, cheese2, cheese3, cheese4];
 
-const CatComponent = ({ roundNumber, addLog, clearLog }) => {
+const CatComponent = ({ roundNumber, addLog, clearLog, points }) => {
   const [cats, setCats] = useState([]);
   const [players, setPlayers] = useState({
     human: null,
@@ -36,7 +34,6 @@ const CatComponent = ({ roundNumber, addLog, clearLog }) => {
   const toggleModal = () => setIsEnd(!isEnd);
 
   const handleExit = () => {
-    console.log("Game exited");
     setStartGame(true);
     setIsEnd(false);
     setCats([]);
@@ -47,6 +44,7 @@ const CatComponent = ({ roundNumber, addLog, clearLog }) => {
     setScores({});
     clearLog();
     roundNumber(0);
+    points(null);
   };
 
   const handleStartGame = () => {
@@ -132,16 +130,16 @@ const CatComponent = ({ roundNumber, addLog, clearLog }) => {
       const selectedCat = selections[index];
       if (selectionCounts[selectedCat.name] === 1) {
         player.addPoints(selectedCat.amountOfCheese);
-        const log = `${player.name} selected ${selectedCat.name} and scored ${selectedCat.amountOfCheese} points. Total points = ${player.points}`;
+        const log = `${player.name} selected ${selectedCat.name} and scored ${selectedCat.amountOfCheese} points.`;
         addLog(log);
-        console.log(log);
         selectedCat.resetAmountOfCheese();
       } else {
-        const log = `${player.name} selected ${selectedCat.name} but scored 0 points due to duplicate selection. Total points = ${player.points}`;
+        const log = `${player.name} selected ${selectedCat.name} but scored 0 points due to duplicate selection.`;
         addLog(log);
-        console.log(log);
       }
     });
+
+    points(playerList);
 
     // Update cheese amounts for all cats
     cats.forEach((cat) => {
@@ -169,8 +167,6 @@ const CatComponent = ({ roundNumber, addLog, clearLog }) => {
   };
 
   const handleShowStatistics = () => {
-    console.log("Game ended.");
-
     const maxScore = Math.max(...Object.values(scores));
     const winners = Object.keys(scores).filter(
       (key) => scores[key] === maxScore
@@ -186,12 +182,12 @@ const CatComponent = ({ roundNumber, addLog, clearLog }) => {
   };
 
   const handleRestart = () => {
-    console.log("Game restarted");
     handleStartGame();
     setRounds(1);
     setScores({});
     setWinner(null);
     clearLog();
+    points(null);
   };
 
   const renderCheeseImages = (amount) => {

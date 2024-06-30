@@ -1,16 +1,18 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { Info } from 'lucide-react';
-import Image from 'next/image';
-import Logo from '@/assets/logo.png';
-import CatComponent from '@/components/component/catComponent';
-import GameRulesModal from '@/components/component/rules';
 import StartGameModal from '@/components/startModal';
+import { useState, useRef, useEffect } from "react";
+import { Info } from "lucide-react";
+import Image from "next/image";
+import Logo from "@/assets/logo.png";
+import CheeseIcon from "@/assets/cheese.svg";
+import CatComponent from "@/components/component/catComponent";
+import GameRulesModal from "@/components/component/rules";
 
 const CatsNCheeseUI = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [actionLogs, setActionLogs] = useState([]);
   const logContainerRef = useRef(null);
   const [rounds, setRounds] = useState(0);
+
   const [isStartModalOpen, setIsStartModalOpen] = useState(true);
   const [isRulesModalOpen, setIsRulesModalOpen] = useState(false);
 
@@ -21,6 +23,9 @@ const CatsNCheeseUI = () => {
   const toggleRulesModal = () => {
     setIsRulesModalOpen(!isRulesModalOpen);
   };
+
+  const [points, setPoints] = useState(null);
+
   const toggleModal = () => setModalOpen(!modalOpen);
 
   const addLog = (log) => {
@@ -89,12 +94,34 @@ const CatsNCheeseUI = () => {
             </div>
             <div className="flex-grow p-2 bg-white shadow-lg rounded-xl">
               <div className="text-sm font-semibold text-gray-700 md:text-base">
-                Player points
+                <div className="flex items-center">
+                  Player points - {points ? points[0].points : 0}{" "}
+                  <Image
+                    src={CheeseIcon}
+                    alt="its a picture of cheese"
+                    style={{
+                      width: "25px",
+                      height: "25px",
+                      marginLeft: "5px",
+                    }}
+                  />
+                </div>
               </div>
             </div>
             <div className="flex-grow p-2 bg-white shadow-lg rounded-xl">
               <div className="text-sm font-semibold text-gray-700 md:text-base">
-                CPU1 points
+                <div className="flex items-center">
+                  CPU1 points - {points ? points[1].points : 0}{" "}
+                  <Image
+                    src={CheeseIcon}
+                    alt="its a picture of cheese"
+                    style={{
+                      width: "25px",
+                      height: "25px",
+                      marginLeft: "5px",
+                    }}
+                  />
+                </div>
               </div>
             </div>
           </div>
@@ -105,6 +132,7 @@ const CatsNCheeseUI = () => {
               addLog={addLog}
               roundNumber={setRounds}
               clearLog={clearLog}
+              points={setPoints}
             />
           </div>
 
@@ -112,12 +140,34 @@ const CatsNCheeseUI = () => {
           <div className="flex flex-col col-span-2 space-y-4">
             <div className="flex-grow p-2 bg-white shadow-lg rounded-xl">
               <div className="text-sm font-semibold text-gray-700 md:text-base">
-                CPU2 points
+                <div className="flex items-center">
+                  CPU2 points - {points ? points[2].points : 0}{" "}
+                  <Image
+                    src={CheeseIcon}
+                    alt="its a picture of cheese"
+                    style={{
+                      width: "25px",
+                      height: "25px",
+                      marginLeft: "5px",
+                    }}
+                  />
+                </div>
               </div>
             </div>
             <div className="flex-grow p-2 bg-white shadow-lg rounded-xl">
               <div className="text-sm font-semibold text-gray-700 md:text-base">
-                CPU3 points
+                <div className="flex items-center">
+                  CPU3 points - {points ? points[3].points : 0}{" "}
+                  <Image
+                    src={CheeseIcon}
+                    alt="its a picture of cheese"
+                    style={{
+                      width: "25px",
+                      height: "25px",
+                      marginLeft: "5px",
+                    }}
+                  />
+                </div>
               </div>
             </div>
             <div className="flex-grow p-2 bg-white shadow-lg rounded-xl">
