@@ -1,4 +1,4 @@
-import StartGameModal from '@/components/startModal';
+import StartGameModal from "@/components/startModal";
 import { useState, useRef, useEffect } from "react";
 import { Info } from "lucide-react";
 import Image from "next/image";
@@ -74,10 +74,7 @@ const CatsNCheeseUI = () => {
           onClick={toggleModal}
           className="flex items-center px-4 py-2 font-semibold text-purple-800 transition duration-300 bg-yellow-400 rounded-full hover:bg-yellow-500"
         >
-          <Info
-            className="mr-2"
-            size={18}
-          />
+          <Info className="mr-2" size={18} />
           Rules
         </button>
       </header>
@@ -181,7 +178,7 @@ const CatsNCheeseUI = () => {
           <div
             ref={logContainerRef}
             className="col-span-12 p-2 overflow-y-auto bg-white shadow-lg rounded-xl"
-            style={{ maxHeight: '105px' }}
+            style={{ maxHeight: "105px" }}
           >
             <div className="text-sm font-semibold text-gray-700 md:text-base">
               Log of actions
@@ -193,8 +190,8 @@ const CatsNCheeseUI = () => {
                   className={`text-sm text-gray-600 transition-all duration-500 ease-in-out
                     ${
                       log.isNew
-                        ? 'bg-yellow-100 scale-102'
-                        : 'bg-transparent scale-100'
+                        ? "bg-yellow-100 scale-102"
+                        : "bg-transparent scale-100"
                     }`}
                 >
                   {log.text}
@@ -208,7 +205,7 @@ const CatsNCheeseUI = () => {
       {/* Footer */}
       <footer className="p-4 text-center text-gray-600 bg-white shadow-md">
         <p>
-          © 2024 Cats n&apos; Cheese |{' '}
+          © 2024 Cats n&apos; Cheese |{" "}
           <a
             href="https://github.com/sylfort/cats-n-cheese"
             className="text-purple-600 hover:underline"
@@ -218,10 +215,7 @@ const CatsNCheeseUI = () => {
         </p>
       </footer>
 
-      <GameRulesModal
-        isOpen={modalOpen}
-        toggleModal={toggleModal}
-      />
+      <GameRulesModal isOpen={modalOpen} toggleModal={toggleModal} />
     </div>
   );
 };
