@@ -14,7 +14,9 @@ const GameRulesModal = ({ isOpen, toggleModal }) => {
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex items-center justify-between">
-              <h3 className="text-xl font-bold">Cats n' Cheese - Game Rules</h3>
+              <h3 className="text-xl font-bold">
+                Cats nlsquo; Cheese - Game Rules
+              </h3>
               <button onClick={toggleModal} className="text-black close-modal">
                 <X size={24} />
               </button>
@@ -47,7 +49,7 @@ const GameRulesModal = ({ isOpen, toggleModal }) => {
                     <strong>Cheese Collection:</strong>
                     <ul className="mt-1 space-y-1 list-disc list-inside">
                       <li>
-                        If you're the only player targeting a cat, you
+                        If you are the only player targeting a cat, you
                         successfully steal all its cheese!
                       </li>
                       <li>
