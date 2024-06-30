@@ -1,4 +1,6 @@
+<p align="center">
 <img src="https://github.com/sylfort/cats-n-cheese/assets/24916160/ca222744-9e82-497e-ad5c-b6412e03491f" alt="Cats n' Cheese Logo" width="250" heigth="250"/>
+</p>
 
 ## 🎮 [Play Now](https://cats-n-cheese.vercel.app)
 
