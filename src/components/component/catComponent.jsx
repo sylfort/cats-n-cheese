@@ -209,7 +209,7 @@ const CatComponent = ({ roundNumber, addLog, clearLog, points }) => {
         key={`${cheeseImage}-${index}`}
         src={cheeseImage}
         alt={`Cheese ${index + 1}`}
-        width={68}
+        width={66}
         height={"auto"}
         className="inline-block mt-1 mr-1"
       />
@@ -258,7 +258,7 @@ const CatComponent = ({ roundNumber, addLog, clearLog, points }) => {
             onClick={() => handlePlayerSelection(cat.id)}
             className={`flex flex-col items-center justify-center p-2 text-white rounded`}
           >
-            <div className="relative w-20 h-20 sm:w-24 sm:h-24">
+            <div className="relative w-20 h-20 xm:w-24 sm:h-24">
               <Image
                 src={catImages[index % catImages.length]}
                 alt={cat.name}
@@ -275,7 +275,6 @@ const CatComponent = ({ roundNumber, addLog, clearLog, points }) => {
               />
             </div>
             <span className="mt-2 text-sm sm:text-base">
-              {cat.name}
               <div className="flex flex-wrap justify-center mt-1">
                 {renderCheeseImages(cheeseAmounts[cat.name])}
               </div>
@@ -287,7 +286,7 @@ const CatComponent = ({ roundNumber, addLog, clearLog, points }) => {
         {startGame ? (
           <button
             onClick={handleStartGame}
-            className="px-4 py-2 font-bold text-white bg-blue-500 rounded hover:bg-blue-700"
+            className="flex items-center px-8 py-4 text-4xl font-semibold text-purple-700 transition duration-300 bg-yellow-400 rounded-full hover:bg-yellow-500"
           >
             Start
           </button>
@@ -314,24 +313,26 @@ const CatComponent = ({ roundNumber, addLog, clearLog, points }) => {
                   ))}
                 </div>
               </div>
-              <button
-                className="px-4 py-2 mt-2 font-bold text-white bg-blue-500 rounded hover:bg-blue-700"
-                onClick={() => {
-                  handleRestart();
-                  toggleModal();
-                }}
-              >
-                Restart Game
-              </button>
-              <button
-                className="px-4 py-2 mt-2 ml-2 font-bold text-white bg-blue-500 rounded hover:bg-blue-700"
-                onClick={() => {
-                  toggleModal();
-                  handleExit();
-                }}
-              >
-                Exit game
-              </button>
+              <div className="flex justify-center mt-2 space-x-4">
+                <button
+                  className="flex items-center px-4 py-2 font-semibold text-purple-800 transition duration-300 bg-yellow-400 rounded-full hover:bg-yellow-500"
+                  onClick={() => {
+                    handleRestart();
+                    toggleModal();
+                  }}
+                >
+                  Restart Game
+                </button>
+                <button
+                  className="flex items-center px-4 py-2 mr-2 font-semibold text-white transition duration-300 bg-green-600 rounded-full hover:bg-green-700"
+                  onClick={() => {
+                    toggleModal();
+                    handleExit();
+                  }}
+                >
+                  Exit game
+                </button>
+              </div>
             </div>
           </div>
         )}

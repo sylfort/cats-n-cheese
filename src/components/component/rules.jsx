@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { X } from 'lucide-react';
+import React from "react";
+import { X } from "lucide-react";
 
 const GameRulesModal = ({ isOpen, toggleModal }) => {
   return (
@@ -14,98 +14,64 @@ const GameRulesModal = ({ isOpen, toggleModal }) => {
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex items-center justify-between">
-              <h3 className="text-lg font-bold">
-                Cats n&apos; Cheese - Game Rules
+              <h3 className="text-xl font-bold">
+                Cats nlsquo; Cheese - Game Rules
               </h3>
-              <button
-                onClick={toggleModal}
-                className="text-black close-modal"
-              >
+              <button onClick={toggleModal} className="text-black close-modal">
                 <X size={24} />
               </button>
             </div>
-            <div className="mt-2 overflow-y-auto max-h-[70vh]">
-              <h4 className="mt-2 font-bold">Game Overview</h4>
-              <ul className="list-disc list-inside">
-                <li>Title: Steal Cheese from Cats</li>
-                <li>Players: 4 players</li>
-                <li>Round Limit: 8 rounds</li>
-              </ul>
+            <div className="mt-4 overflow-y-auto max-h-[70vh] space-y-4">
+              <section>
+                <h4 className="mb-2 text-lg font-bold">🐱 Game Overview</h4>
+                <ul className="space-y-1 list-disc list-inside">
+                  <li>Players: 4 players (1 human, 3 computer-controlled)</li>
+                  <li>Rounds: 8 rounds per game</li>
+                  <li>
+                    Objective: Collect the most cheese cards by the end of the
+                    game
+                  </li>
+                </ul>
+              </section>
 
-              <h4 className="mt-2 font-bold">Objective</h4>
-              <p>
-                Players are mice and they want to steal cheese that cats have
-                gathered. The player who collects the most cheese cards wins. If
-                another mouse targets the same cat, the cat will become aware,
-                so be careful.
-              </p>
+              <section>
+                <h4 className="mb-2 text-lg font-bold">📜 How to Play</h4>
+                <ol className="ml-5 space-y-3 list-decimal list-outside">
+                  <li>
+                    <strong>Setup:</strong> Each cat starts with 1-4 cheese
+                    slices.
+                  </li>
+                  <li>
+                    <strong>Target Selection:</strong> Players secretly choose
+                    which cat to steal from by clicking on a cat card.
+                  </li>
+                  <li>
+                    <strong>Cheese Collection:</strong>
+                    <ul className="mt-1 space-y-1 list-disc list-inside">
+                      <li>
+                        If you are the only player targeting a cat, you
+                        successfully steal all its cheese!
+                      </li>
+                      <li>
+                        If multiple players target the same cat, the cat becomes
+                        aware, and no one gets the cheese.
+                      </li>
+                    </ul>
+                  </li>
+                  <li>
+                    <strong>Round Progression:</strong> Cats receive new cheese
+                    each round, increasing their cheese pile.
+                  </li>
+                </ol>
+              </section>
 
-              <h4 className="mt-2 font-bold">How to Play</h4>
-              <ol className="list-decimal list-inside">
-                <li>
-                  Number of Cheese: Each cat starts the game with a card that
-                  has a number of cheese slices between 1 and 4.
-                </li>
-                <li>
-                  Choose a Target: Players decide which cat they want to steal
-                  cheese from. Each player clicks the targeted cat card.
-                </li>
-                <li>
-                  If multiple players target the same cat, the cat will become
-                  aware of the mice&apos;s presence. In this case no player gets
-                  the Cheese.
-                </li>
-                <li>
-                  Next round: Cats will receive a new cheese card on each round.
-                  The total number of cheese for each cat piles up, so it&apos;s
-                  your chance to comeback if you are behind!
-                </li>
-              </ol>
-
-              <h4 className="mt-2 font-bold">Winning the Game</h4>
-              <p>
-                The mouse that collects the most cheese cards at the end of the
-                game wins.
-              </p>
-
-              <h4 className="mt-2 font-bold">Continuing Gameplay</h4>
-              <ol className="list-decimal list-inside">
-                <li>Now Trying to Steal the Cheese!</li>
-                <li>
-                  Next Attempt: When attempting to steal cheese cards, set down
-                  the cheese cards from the card pile on the cat cards.
-                </li>
-                <li>
-                  Targeting a Cat: If the cat you target does not have the same
-                  cat card issued by another player, you can steal all the
-                  cheese cards on that cat card!
-                </li>
-                <li>
-                  Failure to Steal: If another player issued the same cat card,
-                  you fail to steal and cannot take the cheese cards.
-                </li>
-                <li>
-                  Reusing Cat Cards: You can put the cat card back into your
-                  hand and use it again.
-                </li>
-                <li>
-                  Game End: The game ends after the eight round when the deck
-                  runs out.
-                </li>
-              </ol>
-
-              <h4 className="mt-2 font-bold">Ending the Game</h4>
-              <ol className="list-decimal list-inside">
-                <li>
-                  Counting Cheese Cards: Everyone adds up the numbers on the
-                  cheese cards they have stolen.
-                </li>
-                <li>
-                  Determining the Winner: The player with the highest total
-                  number from the cheese cards wins.
-                </li>
-              </ol>
-              <br />
+              <section>
+                <h4 className="mb-2 text-lg font-bold">🏆 Winning the Game</h4>
+                <p>
+                  The mouse (player) with the most collected cheese at the end
+                  of 8 rounds wins!
+                </p>
+              </section>
             </div>
           </div>
         </div>

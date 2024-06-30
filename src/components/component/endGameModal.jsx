@@ -2,7 +2,7 @@ const EndGameModal = ({ onClick }) => {
   return (
     <button
       onClick={onClick}
-      className="px-4 py-2 font-bold text-white bg-blue-500 rounded hover:bg-blue-700"
+      className="flex items-center px-4 py-2 mr-2 font-semibold text-white transition duration-300 bg-purple-700 rounded-full hover:bg-purple-800"
     >
       End Game
     </button>
