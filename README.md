@@ -2,11 +2,11 @@
 
 ## 🎮 [Play Now](https://cats-n-cheese.vercel.app)
 
-Cats n' Cheese is a game where players act as mice stealing cheese from cats, it's all about strategy and fun! 
+Cats n' Cheese is a single-player game where players act as mice stealing cheese from cats, it's all about strategy and fun! 
 
 You can check the game here: [`cats-n-cheese.vercel.app`](https://cats-n-cheese.vercel.app)
 
-Created for the [MeltingHack](https://melting-hack.tokyo/home) Sprint#2 Hackathon
+Created for the [MeltingHack](https://melting-hack.tokyo) Sprint#2 Hackathon
 
 ## 🐱 Game Overview
 
