@@ -5,10 +5,6 @@ export default class Player {
     this.selections = [];
   }
 
-  logPoints() {
-    console.log(`${this.name} points - ${this.points}`);
-  }
-
   addPoints(amount) {
     this.points += amount;
   }
@@ -19,7 +15,6 @@ export default class Player {
       id = Math.floor(Math.random() * cats.length) + 1;
     }
     const selected = cats.find((cat) => cat.id === id);
-    console.log(selected);
     if (selected !== undefined) {
       this.selections.push(selected);
       return selected;
