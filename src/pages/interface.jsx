@@ -137,6 +137,11 @@ const CatsNCheeseUI = () => {
           <div className="flex flex-col col-span-2 space-y-4">
             <div className="flex-grow p-2 bg-white shadow-lg rounded-xl">
               <div className="text-sm font-semibold text-gray-700 md:text-base">
+                <div className="flex items-center"></div>
+              </div>
+            </div>
+            <div className="flex-grow p-2 bg-white shadow-lg rounded-xl">
+              <div className="text-sm font-semibold text-gray-700 md:text-base">
                 <div className="flex items-center">
                   CPU2 points - {points ? points[2].points : 0}{" "}
                   <Image
@@ -165,11 +170,6 @@ const CatsNCheeseUI = () => {
                     }}
                   />
                 </div>
-              </div>
-            </div>
-            <div className="flex-grow p-2 bg-white shadow-lg rounded-xl">
-              <div className="text-sm font-semibold text-gray-700 md:text-base">
-                End Game Button
               </div>
             </div>
           </div>
