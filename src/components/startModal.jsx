@@ -12,7 +12,7 @@ const StartModal = ({ toggleStartModal }) => {
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-gray-600 bg-opacity-50">
-      <div className="relative w-11/12 p-5 mx-auto bg-white border rounded-md shadow-lg md:w-3/4 lg:w-1/2">
+      <div className="relative w-6/12 p-5 mx-auto bg-white border rounded-md shadow-lg md:w-2/4 lg:w-1/4">
         <Image
           src={logo}
           alt="cats and cheese logo"
